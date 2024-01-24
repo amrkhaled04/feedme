@@ -1,0 +1,10 @@
+{
+  "dart.flutterSdkPaths": ["/Users/apple/fvm/versions"],
+  "search.exclude": {
+    "**/.fvm": true
+  },
+  "files.watcherExclude": {
+    "**/.fvm": true
+  },
+  "nuxt.isNuxtApp": false
+}
