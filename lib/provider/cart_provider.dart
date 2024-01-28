@@ -24,13 +24,13 @@ class CartProvider with ChangeNotifier {
   bool sellerOpen = false;
 
 
-  // setCartDetailsByUid(uid) async {
-  //   print('uid: $uid');
-  //   await authService.carts.where(
-  //       'user_uid', isEqualTo: uid).get().then((value) {
-  //     setCartDetails(value.docs[0]);
-  //   });
-  // }
+  setCartDetailsByUid(uid) async {
+    print('uid: $uid');
+    await authService.carts.where(
+        'user_uid', isEqualTo: uid).get().then((value) {
+      setCartDetails(value.docs[0]);
+    });
+  }
 
 
   setCartDetails(details) {

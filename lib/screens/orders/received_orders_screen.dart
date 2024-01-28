@@ -31,7 +31,7 @@ class ReceivedOrdersScreen extends StatefulWidget {
 String receivedOrderDocID = "";
 class _ReceivedOrdersScreenState extends State<ReceivedOrdersScreen> {
 
-
+  TextEditingController etaController = TextEditingController();
   Auth authService = Auth();
   UserService firebaseUser = UserService();
   bool isOpen = true;
@@ -50,19 +50,19 @@ class _ReceivedOrdersScreenState extends State<ReceivedOrdersScreen> {
   }
 
   updateETA(String eta) async{
-    authService.orders.where("seller_uid",isEqualTo: firebaseUser.user?.uid).get().then((value) {
-      if(value.docs.isNotEmpty){
-        for(int i=0;i<value.docs.length;i++){
-          authService.orders.doc(value.docs[i].id).update({
-            'eta':eta
-          });
-        }
-      }
+    await authService.companies.doc(firebaseUser.user?.uid).update( {
+      'eta':eta
+    });
+  }
+  getETA() async{
+    await authService.companies.doc(firebaseUser.user?.uid).get().then((value) {
+      etaController = TextEditingController(text:value['eta']);
     });
   }
   @override
   void initState() {
     getCompaniesData();
+    getETA();
     super.initState();
   }
 // updating orders variable after getting user uid
@@ -79,11 +79,11 @@ class _ReceivedOrdersScreenState extends State<ReceivedOrdersScreen> {
     }
   }
 
+
   @override
   Widget build(BuildContext context) {
 
     var orderProvider = Provider.of<OrderProvider>(context);
-    TextEditingController etaController = TextEditingController(text:"60");
 
     return Scaffold(
       appBar: AppBar(
@@ -138,6 +138,7 @@ class _ReceivedOrdersScreenState extends State<ReceivedOrdersScreen> {
           return Future.delayed(
             Duration(seconds: 1),(){
               getCompaniesData();
+              getETA();
           }
           );
         },
@@ -194,9 +195,11 @@ class _ReceivedOrdersScreenState extends State<ReceivedOrdersScreen> {
 
                       onTapOutside: (value) {
                         updateETA(etaController.text);
+                        FocusManager.instance.primaryFocus?.unfocus();
                       },
                       onSubmitted: (value) {
                         updateETA(etaController.text);
+                        FocusManager.instance.primaryFocus?.unfocus();
                       },
                       onEditingComplete: () {
                         updateETA(etaController.text);
@@ -216,8 +219,8 @@ class _ReceivedOrdersScreenState extends State<ReceivedOrdersScreen> {
                     itemBuilder: (BuildContext context, int index) {
                       return GestureDetector(
                         onTap: () {
-                          orderProvider.setOrderDetails(snapshot.data.docs[index]);
                           receivedOrderDocID = snapshot.data.docs[index].reference.id;
+                          orderProvider.setOrderDetails(snapshot.data.docs[index]);
                           Navigator.pushNamed(context, PastOrderDetails.screenId);
                         },
                         child: ReceivedOrdersItem(

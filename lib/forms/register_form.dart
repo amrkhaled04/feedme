@@ -10,6 +10,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
 
 import '../services/auth.dart';
 
@@ -21,6 +22,7 @@ class RegisterForm extends StatefulWidget {
   @override
   State<RegisterForm> createState() => _RegisterFormState();
 }
+String phoneNum ='';
 
 class _RegisterFormState extends State<RegisterForm> {
   bool obsecure = true;
@@ -30,6 +32,7 @@ class _RegisterFormState extends State<RegisterForm> {
   late final TextEditingController _emailController;
   late final TextEditingController _passwordController;
   late final TextEditingController _confirmPasswordController;
+  late final TextEditingController _phoneNumberController;
   late final FocusNode _firstNameNode;
   late final FocusNode _lastNameNode;
   late final FocusNode _emailNode;
@@ -43,6 +46,7 @@ class _RegisterFormState extends State<RegisterForm> {
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
     _confirmPasswordController = TextEditingController();
+    _phoneNumberController = TextEditingController();
     _firstNameNode = FocusNode();
     _lastNameNode = FocusNode();
     _emailNode = FocusNode();
@@ -144,6 +148,51 @@ class _RegisterFormState extends State<RegisterForm> {
                   ),
                   const SizedBox(
                     height: 15,
+                  ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: Align(
+                        alignment: const AlignmentDirectional(0.0, 0.0),
+                        child: IntlPhoneField(
+                          keyboardType: const TextInputType.numberWithOptions(),
+                          controller: _phoneNumberController,
+                          decoration: InputDecoration(
+                            labelText: LocaleKeys.phoneNumber.tr(),
+                            enabledBorder: OutlineInputBorder(
+                              // borderSide: BorderSide(
+                              //   color: FlutterFlowTheme.of(context).alternate,
+                              //   width: 2.0,
+                              // ),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              // borderSide: BorderSide(
+                              //   color: FlutterFlowTheme.of(context).primary,
+                              //   width: 2.0,
+                              // ),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              // borderSide: BorderSide(
+                              //   color: FlutterFlowTheme.of(context).error,
+                              //   width: 2.0,
+                              // ),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                            focusedErrorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                              //   color: FlutterFlowTheme.of(context).error,
+                              //   width: 2.0,
+                              ),
+                              borderRadius: BorderRadius.circular(8.0),
+                            ),
+                          ),
+                          initialCountryCode: 'EG',
+                          onChanged: (phone) {
+                            phoneNum = phone.completeNumber;
+                            print((phone.completeNumber).replaceRange(0, 3, '0'));
+                          },
+                        )),
                   ),
                   TextFormField(
                     focusNode: _emailNode,

@@ -7,6 +7,9 @@
   "homePageCategories": "الأقسام",
   "orders": "اوردرات",
   "balance": "رصيدك",
+  "changeAddress": "تغير العنوان",
+  "orderETA": "مده التوصيل",
+  "minutes": "دقيقه",
   "posts": "منشورات",
   "signOut": "تسجيل الخروج",
   "receivedOrders": "الطلبات المستلمة",
@@ -147,11 +150,15 @@
   "sureToDelete": "هل أنت متأكد أنك تريد حذف هذا المنتج؟",
   "createNewCart": "إنشاء سلة تسوق جديدة؟",
   "noNutritionFacts": "لا توجد حقائق تغذية لهذا المنتج",
-  "hi": "مرحبا",
   "closed": "آسف، يبدو أن هذا المكان مغلق في الوقت الحالي",
   "closedLabel": "مغلق",
   "openLabel": "مفتوح",
-  "eta": "ETA"
+  "eta": "ETA",
+  "mustSelectLoactionOnMapError": "* يجب عليك تحديد موقعك على الخريطة",
+  "mustFillAllFieldsError": "* يجب ملء جميع الحقول",
+  "locationUpdatedSuccessfully": "تم تحديث الموقع بنجاح",
+  "buyerName": "اسم المشتري"
+
 
 }
 

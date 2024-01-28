@@ -101,82 +101,80 @@ class _MainAppBarWithSearchState extends State<MainAppBarWithSearch> {
   @override
   Widget build(BuildContext context) {
     var provider = Provider.of<ProductProvider>(context);
-    return SafeArea(
-      child: Container(
-        clipBehavior: Clip.antiAlias,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(18),
-                bottomRight: Radius.circular(18)),
-            color: '#80cf70'.toColor()),
-        height: MediaQuery.of(context).size.height*0.15,
-        padding: const EdgeInsets.all(8),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(left: 2.0,top: MediaQuery.of(context).size.height*0.01),
-                  child: Text(
+    return Container(
+      clipBehavior: Clip.antiAlias,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.only(
+              bottomLeft: Radius.circular(18),
+              bottomRight: Radius.circular(18)),
+          color: '#80cf70'.toColor()),
+      height: MediaQuery.of(context).size.height*0.18,
+      padding: const EdgeInsets.all(8),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(left: 2.0,top: MediaQuery.of(context).size.height*0.037),
+                child: Text(
 
-                    LocaleKeys.hi.tr()+', '+buyerName,
-                    style: TextStyle(
-                      color: Colors.grey[100],
-                      fontSize: context.locale.languageCode == 'en'?MediaQuery.of(context).size.height*0.035:
-                      MediaQuery.of(context).size.height*0.03,
-                    ),
+                  LocaleKeys.hi.tr()+', '+buyerName,
+                  style: TextStyle(
+                    color: Colors.grey[100],
+                    fontSize: context.locale.languageCode == 'en'?MediaQuery.of(context).size.height*0.035:
+                    MediaQuery.of(context).size.height*0.03,
                   ),
                 ),
-                InkWell(
-                  onTap: () {
-                    searchService.searchQueryPage(
-                        context: context,
-                        products: products,
-                        sellers: sellers,
-                        address: address,
-                        sellerDetails: sellerDetails,
-                        provider: provider,
-                        );
-                  },
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: context.locale.languageCode == 'en'?
-                    MediaQuery.of(context).size.height*0.009:MediaQuery.of(context).size.height*0.007,),
-                    child: Container(
-                      padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height*0.009,horizontal: 8),
-                      decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(color: disabledColor.withOpacity(0.2),blurRadius: 2)
-                        ],
-                        borderRadius: BorderRadius.circular(15),
-                        color: '#f9fcf7'.toColor(),
-                      ),
-                      child:  Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(right: 8),
-                            child: Icon(
-                              Icons.search_rounded,
-                              color: Colors.grey,
-                              size: MediaQuery.of(context).size.height*0.03,
-                            ),
-                          ),
-                          Text(LocaleKeys.searchMessage.tr(),style: TextStyle(color: Colors.grey,
-                          fontSize: MediaQuery.of(context).size.height*0.019))
-                        ]
-                      )
+              ),
+              InkWell(
+                onTap: () {
+                  searchService.searchQueryPage(
+                      context: context,
+                      products: products,
+                      sellers: sellers,
+                      address: address,
+                      sellerDetails: sellerDetails,
+                      provider: provider,
+                      );
+                },
+                child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: context.locale.languageCode == 'en'?
+                  MediaQuery.of(context).size.height*0.009:MediaQuery.of(context).size.height*0.007,),
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height*0.009,horizontal: 8),
+                    decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(color: disabledColor.withOpacity(0.2),blurRadius: 2)
+                      ],
+                      borderRadius: BorderRadius.circular(15),
+                      color: '#f9fcf7'.toColor(),
                     ),
+                    child:  Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(right: 8),
+                          child: Icon(
+                            Icons.search_rounded,
+                            color: Colors.grey,
+                            size: MediaQuery.of(context).size.height*0.03,
+                          ),
+                        ),
+                        Text(LocaleKeys.searchMessage.tr(),style: TextStyle(color: Colors.grey,
+                        fontSize: MediaQuery.of(context).size.height*0.019))
+                      ]
+                    )
                   ),
-                )
-              ],
-            ),
-          ],
-        ),
+                ),
+              )
+            ],
+          ),
+        ],
       ),
     );
   }

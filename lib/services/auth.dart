@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:bechdal_app/constants/widgets.dart';
+import 'package:bechdal_app/forms/register_form.dart';
 import 'package:bechdal_app/screens/auth/email_verify_screen.dart';
 import 'package:bechdal_app/screens/auth/phone_otp_screen.dart';
 import 'package:bechdal_app/screens/location_screen.dart';
@@ -95,7 +96,10 @@ class Auth {
   //     Navigator.push(
   //         context,
   //         MaterialPageRoute(
-  //             builder: (builder) => null));
+  //             builder: (builder) => PhoneOTPScreen(
+  //                   phoneNumber: number,
+  //                   verificationIdFinal: verificationId,
+  //                 )));
   //   });
   //   try {
   //     _firebaseAuth.verifyPhoneNumber(
@@ -298,9 +302,9 @@ class Auth {
         'uid': credential.user!.uid,
         'name': "$firstName $lastName",
         'email': email,
-        'mobile': '',
         'address': '',
-        'token':mtoken
+        'token':mtoken,
+        'mobile':phoneNum.replaceRange(0, 3, '0')
       }).then((value) async {
         await credential.user!.sendEmailVerification().then((value) {
           Navigator.pushReplacementNamed(context, LocationScreen.screenId);

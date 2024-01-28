@@ -2,6 +2,8 @@
 
 abstract class  LocaleKeys {
   static const appName = 'appName';
+  static const orderETA = 'orderETA';
+  static const minutes = 'minutes';
   static const splashScreenSlogan = 'splashScreenSlogan';
   static const homePageRecommendation = 'homePageRecommendation';
   static const currency = 'currency';
@@ -9,6 +11,7 @@ abstract class  LocaleKeys {
   static const homePageCategories = 'homePageCategories';
   static const orders = 'orders';
   static const balance = 'balance';
+  static const orderName = 'orderName';
   static const posts = 'posts';
   static const signOut = 'signOut';
   static const receivedOrders = 'receivedOrders';
@@ -47,7 +50,6 @@ abstract class  LocaleKeys {
   static const orderStatus = 'orderStatus';
   static const orderDate = 'orderDate';
   static const orderId = 'orderId';
-  static const orderName = 'orderName';
   static const addToCart = 'addToCart';
   static const description = 'description';
   static const viewProfile = 'viewProfile';
@@ -76,11 +78,11 @@ abstract class  LocaleKeys {
   static const deliveryAddress = 'deliveryAddress';
   static const sellerDetails = 'sellerDetails';
   static const sellerName = 'sellerName';
-  static const buyerName = 'buyerName';
   static const deliveryAddressHint = 'deliveryAddressHint';
   static const name = 'name';
   static const phoneNumber = 'phoneNumber';
   static const orderSummary = 'orderSummary';
+  static const changeAddress = 'changeAddress';
   static const deliveryCharges = 'deliveryCharges';
   static const subtotal = 'subtotal';
   static const confirmOrder = 'confirmOrder';
@@ -155,5 +157,9 @@ abstract class  LocaleKeys {
   static const closedLabel = 'closedLabel';
   static const openLabel = 'openLabel';
   static const eta = 'eta';
+  static const mustSelectLoactionOnMapError = 'mustSelectLoactionOnMapError';
+  static const mustFillAllFieldsError = 'mustFillAllFieldsError';
+  static const locationUpdatedSuccessfully = 'locationUpdatedSuccessfully';
+  static const buyerName = 'buyerName';
 
 }

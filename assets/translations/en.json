@@ -135,6 +135,8 @@
   "enterOtp": "Enter 6-digit code",
   "noProductsFound": "No products found",
   "ok": "Ok",
+  "orderETA": "Estimated delivery time",
+  "minutes": "min",
   "delete": "Delete",
   "sendResetLink": "Send reset link",
   "resetLinkSent": "Reset link sent",
@@ -145,9 +147,9 @@
   "previousOrders": "Previous orders",
   "emptyCart": "Seems you have added nothing to your cart for now! Start exploring and add food",
   "noOrders": "No orders",
+  "changeAddress": "Change Address",
   "noPreviousOrders": "No previous orders",
   "clearCart": "Creating a new order will clear your cart with ",
-  "hi": "Hi",
   "sureToDelete": "Are you sure you want to delete this product?",
   "createNewCart": "Create new cart?",
   "noNutritionFacts": "No nutrition facts available at the moment",
@@ -155,10 +157,9 @@
   "closed": "Sorry it seems this place is closed at the moment",
   "closedLabel": "Closed",
   "openLabel": "Open",
-  "eta": "ETA"
-
-
-
-
+  "eta": "ETA",
+  "mustSelectLoactionOnMapError": "* You must select your location on the map",
+  "mustFillAllFieldsError": "* You must fill all fields",
+  "locationUpdatedSuccessfully": "Location updated successfully"
 
 }

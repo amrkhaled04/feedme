@@ -161,7 +161,9 @@ class _CartScreenState extends State<CartScreen> {
                              }
                              Navigator.pushNamed(context, 'checkout_screen');
                            },
-                           child: Text(LocaleKeys.checkout.tr(),style: TextStyle(fontSize:MediaQuery.of(context).size.width*0.055 ),),
+                           child: Text(LocaleKeys.checkout.tr(),style: TextStyle(
+                               color: Colors.grey.shade200,
+                               fontSize:MediaQuery.of(context).size.width*0.055 ),),
                            style: ElevatedButton.styleFrom(
                                backgroundColor: '#80cf70'.toColor() ,
                                shape: RoundedRectangleBorder(

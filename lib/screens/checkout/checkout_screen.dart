@@ -41,6 +41,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   Auth authService = Auth();
   UserService firebaseUser = UserService();
   String companyToken = "";
+  String orderETA = "";
 
   void sendNotification()async{
 
@@ -85,6 +86,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         if(data['seller_uid'] == idList[i]){
           if(companiesData![i]['delivery'][value['city']] != null){
             setState(() {
+              orderETA = companiesData![i]['eta'];
               companyToken = companiesData![i]['token'];
               shippingCost = int.parse(companiesData![i]['delivery'][value['city']]);
             });
@@ -281,6 +283,29 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       Spacer(),
                       Text(
                         '${LocaleKeys.currency.tr()} $shippingCost',
+                        style: TextStyle(
+                          fontFamily: 'Lato',
+                          fontSize: MediaQuery.of(context).size.width*0.045,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.all(10),
+                  child: Row(
+                    children: [
+                      Text(
+                        LocaleKeys.orderETA.tr(),
+                        style: TextStyle(
+
+                          fontSize: MediaQuery.of(context).size.width*0.045,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Spacer(),
+                      Text(
+                        '$orderETA ${LocaleKeys.minutes.tr()} ',
                         style: TextStyle(
                           fontFamily: 'Lato',
                           fontSize: MediaQuery.of(context).size.width*0.045,

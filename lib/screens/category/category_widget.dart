@@ -133,6 +133,7 @@ class _CategoryWidgetState extends State<CategoryWidget> {
                                     height: MediaQuery.of(context).size.height*0.083,
                                     width: MediaQuery.of(context).size.height*0.088,
                                     decoration: BoxDecoration(
+                                      // color: Colors.grey.shade100,
                                         boxShadow: [
                                           BoxShadow(
                                               color: Colors.grey.shade100,

@@ -86,8 +86,8 @@ class _SplashScreenState extends State<SplashScreen> {
         for (int i = 0; i < idList.length; i++) {
           if(authService.currentUser?.uid == idList[i]) {
             orders =
-                authService.orders.where('seller_uid',
-                    isEqualTo: authService.currentUser?.uid).get();
+                authService.orders.orderBy("created_at",descending: true).where('seller_uid',
+                    isEqualTo: authService.currentUser?.uid).orderBy("created_at",descending: true).get();
           }
         }
       }
@@ -119,7 +119,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
           Navigator.pushReplacementNamed(context, MainNavigationScreen.screenId);
         } else {
-          // cartProvider.setCartDetailsByUid(user.uid);
+          cartProvider.setCartDetailsByUid(user.uid);
 
           for(var id in idList){
             if(id == user.uid){

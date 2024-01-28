@@ -118,6 +118,7 @@ class Main extends StatelessWidget with WidgetsBindingObserver {
 
     return MaterialApp(
         theme: ThemeData(
+          useMaterial3: false,
           primaryColor: blackColor,
           backgroundColor: whiteColor,
           fontFamily: 'Alegreya',
@@ -131,7 +132,7 @@ class Main extends StatelessWidget with WidgetsBindingObserver {
         routes: {
           SplashScreen.screenId: (context) => const SplashScreen(),
           LoginScreen.screenId: (context) => const LoginScreen(),
-          PhoneAuthScreen.screenId: (context) => const PhoneAuthScreen(),
+          // PhoneAuthScreen.screenId: (context) => const PhoneAuthScreen(),
           LocationScreen.screenId: (context) => const LocationScreen(),
           HomeScreen.screenId: (context) => const HomeScreen(),
           WelcomeScreen.screenId: (context) => WelcomeScreen(),

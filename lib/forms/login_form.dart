@@ -186,31 +186,31 @@ class _LogInFormState extends State<LogInForm> {
         const SizedBox(
           height: 20,
         ),
-        RichText(
-          text: TextSpan(
-            text: LocaleKeys.dontHaveAccount.tr(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              TextSpan(
-                recognizer: TapGestureRecognizer()
-                  ..onTap = () {
-                    Navigator.pushNamed(context, RegisterScreen.screenId);
-                  },
-                text: ' ${LocaleKeys.createAccount.tr()}',
+              Text(LocaleKeys.dontHaveAccount.tr(),
                 style: TextStyle(
                   fontFamily: 'Oswald',
-                  decoration: TextDecoration.underline,
                   fontSize: MediaQuery.of(context).size.width*0.04,
-                  color: secondaryColor,
+                  color: greyColor,
+                ),),
+              GestureDetector(
+                onTap: (){
+                  Navigator.pushNamed(context, RegisterScreen.screenId);
+                },
+                child: Text(' ${LocaleKeys.createAccount.tr()}',
+                  style: TextStyle(
+                    fontFamily: 'Oswald',
+                    decoration: TextDecoration.underline,
+                    fontSize: MediaQuery.of(context).size.width*0.04,
+                    color: secondaryColor,
+                  ),
                 ),
               )
             ],
-            style: TextStyle(
-              fontFamily: 'Oswald',
-              fontSize: 14,
-              color: greyColor,
-            ),
+
           ),
-        ),
         // LoginInButtons(),
       ],
     );

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:legacy_progress_dialog/legacy_progress_dialog.dart';
+// import 'package:legacy_progress_dialog/legacy_progress_dialog.dart';
 
 import '../constants/colors.dart';
 
@@ -7,13 +7,13 @@ class BottomNavigationWidget extends StatelessWidget {
   final bool validator;
   final Function()? onPressed;
   final String buttonText;
-  final ProgressDialog? progressDialog;
+  // final ProgressDialog? progressDialog;
   const BottomNavigationWidget({
     Key? key,
     required this.validator,
     this.onPressed,
     required this.buttonText,
-    this.progressDialog,
+    // this.progressDialog,
   }) : super(key: key);
 
   @override

@@ -19,6 +19,8 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../components/main_appbar_with_search.dart';
+
 import '../../l10n/locale_keys.g.dart';
 import '../../provider/order_provider.dart';
 import '../../services/auth.dart';
@@ -36,6 +38,14 @@ class PastOrderDetails extends StatefulWidget {
 
 
 class _PastOrderDetailsState extends State<PastOrderDetails> {
+  _launchCaller(String phonenum) async {
+    String url = "tel:$phonenum";
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
 
   static Future<void> openMap(double latitude, double longitude) async {
     String googleUrl = 'https://www.google.com/maps/search/?api=1&query=$latitude,$longitude';
@@ -140,13 +150,13 @@ class _PastOrderDetailsState extends State<PastOrderDetails> {
                   '${LocaleKeys.orderId.tr()}: ',
                   style: TextStyle(
                       fontFamily: 'Lato',
-                      fontSize: 16),
+                      fontSize: MediaQuery.of(context).size.width*0.045),
                 ),
                 Text(
                   orderProvider.orderData!.id,
                   style: TextStyle(
                       fontFamily: 'Lato',
-                      fontSize: 16),
+                      fontSize: MediaQuery.of(context).size.width*0.045),
                 ),
               ],
             )
@@ -159,13 +169,13 @@ class _PastOrderDetailsState extends State<PastOrderDetails> {
                   '${LocaleKeys.orderDate.tr()}: ',
                   style: TextStyle(
                       fontFamily: 'Lato',
-                      fontSize: 16),
+                      fontSize: MediaQuery.of(context).size.width*0.045),
                 ),
                 Text(
                   '${DateFormat.yMMMd().format(date)} ${DateFormat.jm().format(date)}',
                   style: TextStyle(
                       fontFamily: 'Lato',
-                      fontSize: 16),
+                      fontSize: MediaQuery.of(context).size.width*0.045),
                 )
               ],
             ),
@@ -176,7 +186,7 @@ class _PastOrderDetailsState extends State<PastOrderDetails> {
               children: [
                 Text(
                   '${LocaleKeys.orderStatus.tr()}: ',
-                  style: TextStyle(fontSize: 16),
+                  style: TextStyle(fontSize: MediaQuery.of(context).size.width*0.045),
                 ),
                 IconButton(
                     onPressed: (){
@@ -203,7 +213,7 @@ class _PastOrderDetailsState extends State<PastOrderDetails> {
               '${LocaleKeys.totalPrice.tr()}: ${orderProvider.orderData!['total_price']}',
               style: TextStyle(
                   fontFamily: 'Lato',
-                  fontSize: 16),
+                  fontSize: MediaQuery.of(context).size.width*0.045),
             ),
           ),
           Padding(
@@ -212,11 +222,11 @@ class _PastOrderDetailsState extends State<PastOrderDetails> {
               children: [
                 Text(
                   '${LocaleKeys.paymentMethod.tr()}: ',
-                  style: TextStyle(fontSize: 16),
+                  style: TextStyle(fontSize: MediaQuery.of(context).size.width*0.045),
                 ),
                 Text(
                 orderProvider.orderData!['payment_method'] == 'cash on delivery' ? LocaleKeys.cashOnDelivery.tr() : 'Online Payment',
-                style: TextStyle(fontSize: 16),
+                style: TextStyle(fontSize: MediaQuery.of(context).size.width*0.045),
                 ),
               ],
             )
@@ -227,7 +237,7 @@ class _PastOrderDetailsState extends State<PastOrderDetails> {
               children: [
                 Text(
                   '${LocaleKeys.deliveryAddress.tr()}: ',
-                  style: TextStyle(fontSize: 16),
+                  style: TextStyle(fontSize: MediaQuery.of(context).size.width*0.045),
                 ),
                 Icon(Icons.location_on_outlined),
                 GestureDetector(
@@ -237,9 +247,13 @@ class _PastOrderDetailsState extends State<PastOrderDetails> {
                   },
                   child: Text(
                     orderProvider.orderData!['address'],
+                    softWrap: false,
+                    overflow: TextOverflow.fade,
+                    maxLines: 2,
                     style: TextStyle(
+                      overflow: TextOverflow.fade,
                         decoration: TextDecoration.underline,
-                        fontSize: MediaQuery.of(context).size.width*0.035),
+                        fontSize: MediaQuery.of(context).size.width*0.037),
                   ),
                 ),
               ],
@@ -251,11 +265,35 @@ class _PastOrderDetailsState extends State<PastOrderDetails> {
               children: [
                 Text(
                   '${LocaleKeys.buyerName.tr()}: ',
-                  style: TextStyle(fontSize: 16),
+                  style: TextStyle(fontSize: MediaQuery.of(context).size.width*0.045),
                 ),
                 Text(
                   orderProvider.orderData!['buyer_name'],
-                  style: TextStyle(fontSize: 16),
+                  style: TextStyle(fontSize: MediaQuery.of(context).size.width*0.045),
+                )
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                Text(
+                  '${LocaleKeys.phoneNumber.tr()}: ',
+                  style: TextStyle(fontSize: MediaQuery.of(context).size.width*0.045),
+                ),
+                Icon(Icons.call_rounded),
+                GestureDetector(
+                  onTap: (){
+                    _launchCaller(orderProvider.orderData!['buyer_mobile']);
+                  },
+                  child: Text(
+                    orderProvider.orderData!['buyer_mobile'],
+                    style: TextStyle(
+                        fontFamily: 'Lato',
+                        decoration: TextDecoration.underline,
+                        fontSize: MediaQuery.of(context).size.width*0.045),
+                  ),
                 )
               ],
             ),
@@ -264,14 +302,14 @@ class _PastOrderDetailsState extends State<PastOrderDetails> {
           //   padding: const EdgeInsets.all(8.0),
           //   child: Text(
           //     'Delivery Date: ${orderProvider.orderData!['delivery_date']}',
-          //     style: TextStyle(fontSize: 16),
+          //     style: TextStyle(fontSize: MediaQuery.of(context).size.width*0.045),
           //   ),
           // ),
           // Padding(
           //   padding: const EdgeInsets.all(8.0),
           //   child: Text(
           //     'Delivery Time: ${orderProvider.orderData!['delivery_time']}',
-          //     style: TextStyle(fontSize: 16),
+          //     style: TextStyle(fontSize: MediaQuery.of(context).size.width*0.045),
           //   ),
           // ),
           // Padding(
@@ -293,11 +331,11 @@ class _PastOrderDetailsState extends State<PastOrderDetails> {
           //     children: [
           //       Text(
           //         '${LocaleKeys.sellerName.tr()}: ',
-          //         style: TextStyle(fontSize: 16),
+          //         style: TextStyle(fontSize: MediaQuery.of(context).size.width*0.045),
           //       ),
           //       // Text(
           //       //   orderProvider.orderData!['seller_name'],
-          //       //   style: TextStyle(fontSize: 16),
+          //       //   style: TextStyle(fontSize: MediaQuery.of(context).size.width*0.045),
           //       // )
           //     ],
           //   ),

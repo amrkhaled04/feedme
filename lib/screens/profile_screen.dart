@@ -3,15 +3,23 @@ import 'package:bechdal_app/constants/widgets.dart';
 import 'package:bechdal_app/extensions.dart';
 import 'package:bechdal_app/screens/welcome_screen.dart';
 import 'package:bechdal_app/services/user.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:csc_picker/csc_picker.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:bechdal_app/utils.dart';
 import '../components/change_profile_photo.dart';
 import '../components/image_picker_widget.dart';
 import '../l10n/locale_keys.g.dart';
 import '../services/auth.dart';
+import 'auth/login_screen.dart';
+import 'location_screen.dart';
+import 'main_navigatiion_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   static const screenId = 'profile_screen';
@@ -25,6 +33,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final GoogleSignIn googleSignIn = GoogleSignIn();
   UserService firebaseUser = UserService();
 
+  String errorString = "";
 
   Auth auth = Auth();
   //
@@ -48,7 +57,318 @@ class _ProfileScreenState extends State<ProfileScreen> {
       return AssetImage('assets/avatar.png');
     }
   }
+  late GoogleMapController googleMapController;
 
+  CameraPosition initialCameraPosition = CameraPosition(target: LatLng(37.42796133580664, -122.085749655962), zoom: 14);
+
+  Set<Marker> markers = {};
+
+  openLocationBottomsheet(BuildContext context) {
+
+    bool firstLaunch = true;
+    String countryValue = '';
+    String stateValue = '';
+    String cityValue = '';
+    String address = '';
+    String manualAddress = '';
+    loadingDialogBox(context, LocaleKeys.fetchingDetails.tr());
+    getLocationAndAddress(context).then((location) {
+      if (location != null) {
+        Navigator.pop(context);
+        setState(() {
+          address = location;
+        });
+        showModalBottomSheet(
+            isScrollControlled: true,
+            enableDrag: false,
+            context: context,
+            backgroundColor: '#f9fcf7'.toColor(),
+            builder: (context) {
+              return StatefulBuilder(
+                builder: (context, setState) {
+                  firstLaunch?
+                  getCurrentLocation(
+                      context, serviceEnabled, permission)
+                      .then((value) {
+                    if (value != null) {
+                      initialCameraPosition = CameraPosition(target: LatLng(value.latitude, value.longitude), zoom: 14);
+                      firebaseUser.updateFirebaseUser(context, {
+                        'location':
+                        GeoPoint(value.latitude, value.longitude),
+                        'address': address
+                      }).then((value) {
+                        customSnackBar(context: context, content: LocaleKeys.locationUpdatedSuccessfully.tr());
+                      });
+                    }
+                    setState((){
+                      googleMapController
+                          .animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: LatLng(value.latitude, value.longitude), zoom: 14)));
+                      markers.clear();
+                      markers.add(Marker(markerId: const MarkerId('currentLocation'),position: LatLng(value.latitude, value.longitude)));
+
+                    });
+                  }):null;
+                  firstLaunch = false;
+                  return Container(
+                    color: whiteColor,
+                    child: Column(
+                      children: [
+                        Container(
+                          height: 30,
+                          color:'#80cf70'.toColor(),
+                        ),
+                        AppBar(
+                          toolbarHeight: MediaQuery.of(context).size.height*0.08,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.vertical(
+                              bottom: Radius.circular(10),
+                            ),
+                          ),
+                          automaticallyImplyLeading: false,
+                          iconTheme: IconThemeData(
+                            color: Colors.grey[100],
+                            size: MediaQuery.of(context).size.height*0.04,
+                          ),
+                          backgroundColor: '#80cf70'.toColor(),
+                          elevation: 0.5,
+                          title: Row(
+                              children: [
+                                IconButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    icon: const Icon(
+                                      Icons.clear,
+                                    )),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  LocaleKeys.chooseLocation.tr(),
+                                  style: TextStyle(color: Colors.grey[100],fontSize: MediaQuery.of(context).size.width*0.09),
+                                )
+                              ]),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        // Container(
+                        //   padding: const EdgeInsets.symmetric(
+                        //       vertical: 10, horizontal: 10),
+                        //   child: TextFormField(
+                        //     decoration: InputDecoration(
+                        //         suffixIcon: const Icon(Icons.search),
+                        //         hintText: LocaleKeys.selectCityAreaOrNeighbourhood.tr(),
+                        //         hintStyle: TextStyle(
+                        //           color: greyColor,
+                        //           fontSize: 12,
+                        //         ),
+                        //         contentPadding: const EdgeInsets.all(20),
+                        //         border: OutlineInputBorder(
+                        //             borderRadius: BorderRadius.circular(8))),
+                        //   ),
+                        // ),
+                        // ListTile(
+                        //   onTap: () async {
+                        //     customSnackBar(context: context, content: LocaleKeys.fetchingLocation.tr());
+                        //     await getCurrentLocation(
+                        //         context, serviceEnabled, permission)
+                        //         .then((value) {
+                        //       if (value != null) {
+                        //         _initialcameraposition = LatLng(value.latitude, value.logitude);
+                        //         firebaseUser.updateFirebaseUser(context, {
+                        //           'location':
+                        //           GeoPoint(value.latitude, value.longitude),
+                        //           'address': address
+                        //         }).then((value) {
+                        //
+                        //           customSnackBar(context: context, content: LocaleKeys.locationUpdatedSuccessfully.tr());
+                        //
+                        //           return (countryValue.isEmpty || cityValue.isEmpty || stateValue.isEmpty || address.isEmpty )  ? null   : (widget.onlyPop == true)
+                        //               ? (widget.popToScreen.isNotEmpty)
+                        //               ? Navigator.of(context)
+                        //               .pushNamedAndRemoveUntil(
+                        //               widget.popToScreen,
+                        //                   (route) => false)
+                        //               : Navigator.of(context)
+                        //               .pushNamedAndRemoveUntil(
+                        //               MainNavigationScreen.screenId,
+                        //                   (route) => false)
+                        //               : Navigator.of(context)
+                        //               .pushNamedAndRemoveUntil(
+                        //               MainNavigationScreen.screenId,
+                        //                   (route) => false);
+                        //         });
+                        //       }
+                        //     });
+                        //   },
+                        //   horizontalTitleGap: 0,
+                        //   leading: Icon(
+                        //     Icons.my_location,
+                        //     color: secondaryColor,
+                        //   ),
+                        //   title: Text(
+                        //     LocaleKeys.useCurrentLocation.tr(),
+                        //     style: TextStyle(
+                        //       color: secondaryColor,
+                        //       fontWeight: FontWeight.bold,
+                        //     ),
+                        //   ),
+                        //   subtitle: Text(
+                        //     address == '' ? LocaleKeys.fetchCurrentLocation.tr() : address,
+                        //     style: TextStyle(
+                        //       color: greyColor,
+                        //       fontSize: 10,
+                        //     ),
+                        //   ),
+                        // ),
+
+                        Container(
+                          width: MediaQuery.of(context).size.width*0.95,
+                          height: MediaQuery.of(context).size.height*0.45,
+                          child: Stack(
+                              children: [
+                                Container(
+                                  clipBehavior: Clip.antiAlias,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(15)
+                                  ),
+                                  child: GoogleMap(
+                                    initialCameraPosition: initialCameraPosition,
+                                    markers: markers,
+                                    zoomControlsEnabled: false,
+                                    zoomGesturesEnabled: true,
+                                    mapType: MapType.normal,
+                                    onTap: (LatLng x){
+                                      setState((){
+                                        firstLaunch = false;
+                                        markers.clear();
+                                        markers.add(Marker(markerId: const MarkerId('currentLocation'),position: LatLng(x.latitude, x.longitude)));
+
+                                      });
+                                      firebaseUser.updateFirebaseUser(context, {
+                                        'location':GeoPoint(x.latitude, x.longitude)
+                                      }
+                                      );
+                                    },
+                                    onMapCreated: (GoogleMapController controller) {
+                                      googleMapController = controller;
+                                    },
+                                  ),
+                                ),
+                                Positioned(
+                                  right: 5,
+                                  bottom: 5,
+                                  child: FloatingActionButton.extended(
+                                    onPressed: () async {
+                                      customSnackBar(context: context, content: LocaleKeys.fetchingLocation.tr());
+                                      await getCurrentLocation(
+                                          context, serviceEnabled, permission)
+                                          .then((value) {
+                                        if (value != null) {
+                                          initialCameraPosition = CameraPosition(target: LatLng(value.latitude, value.longitude), zoom: 14);
+                                          firebaseUser.updateFirebaseUser(context, {
+                                            'location':
+                                            GeoPoint(value.latitude, value.longitude),
+                                            'address': address
+                                          }).then((value) {
+                                            customSnackBar(context: context, content: LocaleKeys.locationUpdatedSuccessfully.tr());
+                                          });
+                                        }
+                                        setState((){
+                                          firstLaunch = false;
+                                          googleMapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: LatLng(value.latitude, value.longitude), zoom: 14)));
+                                          markers.clear();
+                                          markers.add(Marker(markerId: const MarkerId('currentLocation'),position: LatLng(value.latitude, value.longitude)));
+
+                                        });
+                                      });
+                                    },
+                                    backgroundColor: '#80cf70'.toColor(),
+                                    label: const Text("Current Location"),
+                                    icon: const Icon(Icons.location_history),
+                                  ),
+                                ),
+                              ]
+                          ),
+                        ),
+
+                        Container(
+                          alignment: Alignment.centerLeft,
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 10),
+                          child: Text(
+                            LocaleKeys.chooseCity.tr(),
+                            textAlign: TextAlign.start,
+                            style: TextStyle(
+                                color: blackColor,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 10, horizontal: 10),
+                          child: CSCPicker(
+                            layout: Layout.vertical,
+                            defaultCountry: CscCountry.Egypt,
+                            flagState: CountryFlag.DISABLE,
+                            dropdownDecoration:
+                            const BoxDecoration(shape: BoxShape.rectangle),
+                            onCountryChanged: (value) async {
+                              setState(() {
+                                countryValue = value;
+                              });
+                            },
+                            onStateChanged: (value) async {
+                              setState(() {
+                                if (value != null) {
+                                  stateValue = value;
+                                }
+                              });
+                            },
+                            onCityChanged: (value) async {
+                              setState(() {
+                                if (value != null) {
+                                  cityValue = value;
+                                  manualAddress = "$cityValue, $stateValue";
+                                  print(manualAddress);
+                                }
+                              });
+                              if (value != null) {
+                                firebaseUser.updateFirebaseUser(context, {
+                                  'address': address,
+                                  'state': stateValue,
+                                  'city': cityValue,
+                                  'country': countryValue
+                                }).then((value) {
+                                  if (kDebugMode) {
+                                    print(
+                                        manualAddress + 'inside manual selection');
+                                  }
+
+                                  if (countryValue.isEmpty || cityValue.isEmpty || stateValue.isEmpty || address.isEmpty )  {
+                                    customSnackBar(context: context, content: LocaleKeys.mustFillAllFieldsError.tr());
+                                  } else {
+                                    customSnackBar(context: context, content: LocaleKeys.locationUpdatedSuccessfully.tr());
+                                    return Navigator.pop(context);
+                                  }
+                                });
+                              }
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              );
+            });
+      } else {
+        Navigator.pop(context);
+      }
+    });
+  }
 
 
 
@@ -181,7 +501,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Navigator.of(context).pushNamed('past_orders');
                   },
                   child: Text(LocaleKeys.previousOrders.tr(),
-                      style: TextStyle(fontSize: MediaQuery.of(context).size.height*0.02)),
+                      style: TextStyle(
+                          color: Colors.grey.shade200,
+                          fontSize: MediaQuery.of(context).size.height*0.02)),
                   style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                       backgroundColor: '#80cf70'.toColor(),
@@ -205,7 +527,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
               },
               child: Text(LocaleKeys.switchLanguage.tr(),
-                  style: TextStyle(fontSize: MediaQuery.of(context).size.height*0.02)),
+                  style: TextStyle(
+                      color: Colors.grey.shade200,
+                      fontSize: MediaQuery.of(context).size.height*0.02)),
               style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                   backgroundColor: '#80cf70'.toColor(),
@@ -215,6 +539,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
           SizedBox(
             height: 15,
           ),
+          ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                  backgroundColor: '#80cf70'.toColor(),
+                  minimumSize: Size(MediaQuery.of(context).size.width*0.8, MediaQuery.of(context).size.height*0.075)
+              ),
+              onPressed: (){
+                openLocationBottomsheet(context);
+
+              },
+              child: Text(LocaleKeys.changeAddress.tr(),
+                  style: TextStyle(
+                      color: Colors.grey.shade200,
+                      fontSize: MediaQuery.of(context).size.height*0.02)),
+
+          ),
+          SizedBox(
+          height: 15,
+
+          ),
+
           ElevatedButton(
               style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
@@ -235,7 +580,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               },
               child: Text(
                 LocaleKeys.signOut.tr(),
-                  style: TextStyle(fontSize: MediaQuery.of(context).size.height*0.02)
+                  style: TextStyle(
+                      color: Colors.grey.shade200,
+                      fontSize: MediaQuery.of(context).size.height*0.02)
               )
           ),
           Spacer(flex: 4,),
