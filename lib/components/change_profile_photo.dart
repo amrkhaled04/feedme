@@ -1,6 +1,5 @@
 
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:bechdal_app/services/user.dart';
 import 'package:file_picker/file_picker.dart';
@@ -12,6 +11,8 @@ import '../services/auth.dart';
 import '../utils.dart';
 
 class ChangeProfilePhoto extends StatefulWidget {
+  const ChangeProfilePhoto({Key? key}) : super(key: key);
+
   @override
   _ChangeProfilePhotoState createState() => _ChangeProfilePhotoState();
 }
@@ -31,7 +32,7 @@ class _ChangeProfilePhotoState extends State<ChangeProfilePhoto> {
 
     // return 2 circles, one to delete the current profile photo, and one to add a new one
 
-    return Container(
+    return SizedBox(
 
 
       height: MediaQuery.of(context).size.height * 0.25,
@@ -39,13 +40,13 @@ class _ChangeProfilePhotoState extends State<ChangeProfilePhoto> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text('Profile Photo'
+          const Text('Profile Photo'
           , style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold
           ),
           ),
-          SizedBox(height: 20,),
+          const SizedBox(height: 20,),
           Row(
 
 
@@ -70,17 +71,17 @@ class _ChangeProfilePhotoState extends State<ChangeProfilePhoto> {
                     child: Container(
                       width: 100,
                       height: 100,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         shape: BoxShape.circle,
                         color: Colors.black,
                       ),
-                      child: Icon(
+                      child: const Icon(
                         CupertinoIcons.delete,
                         color: Colors.white,
                       ),
                     ),
                   ),
-                  Text('Delete'),
+                  const Text('Delete'),
                 ],
               ),
               Column(
@@ -116,17 +117,17 @@ class _ChangeProfilePhotoState extends State<ChangeProfilePhoto> {
                     child: Container(
                       width: 100,
                       height: 100,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         shape: BoxShape.circle,
                         color: Colors.black,
                       ),
-                      child: Icon(
+                      child: const Icon(
                         CupertinoIcons.pencil,
                         color: Colors.white,
                       ),
                     ),
                   ),
-                  Text('Change'),
+                  const Text('Change'),
                 ],
               ),
             ],

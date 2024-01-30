@@ -1,27 +1,16 @@
-import 'package:bechdal_app/components/custom_icon_button.dart';
-import 'package:bechdal_app/components/login_buttons.dart';
 import 'package:bechdal_app/constants/colors.dart';
 import 'package:bechdal_app/constants/validators.dart';
 import 'package:bechdal_app/constants/widgets.dart';
 import 'package:bechdal_app/extensions.dart';
 import 'package:bechdal_app/l10n/locale_keys.g.dart';
 import 'package:bechdal_app/screens/auth/register_screen.dart';
-import 'package:bechdal_app/screens/auth/reset_password_screen.dart';
-import 'package:bechdal_app/screens/splash_screen.dart';
 import 'package:bechdal_app/services/auth.dart';
 import 'package:bechdal_app/services/user.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:email_validator/email_validator.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../screens/auth/phone_auth_screen.dart';
-import '../screens/main_navigatiion_screen.dart';
-import '../screens/orders/received_orders_screen.dart';
-import '../screens/splash_screen.dart';
-import '../screens/splash_screen.dart';
 
 class LogInForm extends StatefulWidget {
   const LogInForm({

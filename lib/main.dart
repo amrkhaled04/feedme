@@ -87,7 +87,7 @@ void main() async {
 
 class ErrorWidgetClass extends StatelessWidget {
   final FlutterErrorDetails errorDetails;
-  ErrorWidgetClass(this.errorDetails);
+  const ErrorWidgetClass(this.errorDetails, {Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return CustomErrorWidget(
@@ -98,7 +98,7 @@ class ErrorWidgetClass extends StatelessWidget {
 
 void setErrorBuilder() {
   ErrorWidget.builder = (FlutterErrorDetails errorDetails) {
-    return Scaffold(
+    return const Scaffold(
         body: Center(
             child: Text("Unexpected error. See console for details.")));
   };
@@ -120,9 +120,8 @@ class Main extends StatelessWidget with WidgetsBindingObserver {
         theme: ThemeData(
           useMaterial3: false,
           primaryColor: blackColor,
-          backgroundColor: whiteColor,
           fontFamily: 'Alegreya',
-          scaffoldBackgroundColor: whiteColor,
+          scaffoldBackgroundColor: whiteColor, //colorScheme: ColorScheme(background: whiteColor),
         ),
         debugShowCheckedModeBanner: false,
         initialRoute: SplashScreen.screenId,
@@ -153,16 +152,17 @@ class Main extends StatelessWidget with WidgetsBindingObserver {
           ProductDetail.screenId: (context) => const ProductDetail(),
           ProductByCategory.screenId: (context) => const ProductByCategory(),
           CartScreen.screenId: (context) => const CartScreen(),
-          CheckoutScreen.screenId: (context) => CheckoutScreen(),
+          CheckoutScreen.screenId: (context) => const CheckoutScreen(),
           PastOrdersScreen.screenId: (context) => const PastOrdersScreen(),
-          SellerProfileScreen.screenId: (context) => SellerProfileScreen(),
-          PastOrderDetails.screenId: (context) => PastOrderDetails(),
-          ReceivedOrdersScreen.screenId: (context) => ReceivedOrdersScreen(),
+          SellerProfileScreen.screenId: (context) => const SellerProfileScreen(),
+          PastOrderDetails.screenId: (context) => const PastOrderDetails(),
+          ReceivedOrdersScreen.screenId: (context) => const ReceivedOrdersScreen(),
           Checkout.screenId: (context) => const Checkout(),
           // UserChatScreen.screenId: (context) => const UserChatScreen(),
         });
   }
 
+  @override
   void didChangeAppLifecycleState(AppLifecycleState state) async {
     switch (state) {
       case AppLifecycleState.resumed:

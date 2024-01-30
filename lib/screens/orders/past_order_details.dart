@@ -7,19 +7,15 @@ import 'dart:convert';
 import 'package:bechdal_app/screens/orders/received_orders_screen.dart';
 import 'package:bechdal_app/screens/splash_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:bechdal_app/extensions.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../components/main_appbar_with_search.dart';
 
 import '../../l10n/locale_keys.g.dart';
 import '../../provider/order_provider.dart';
@@ -28,6 +24,8 @@ import '../../services/auth.dart';
 class PastOrderDetails extends StatefulWidget {
 
   static const String screenId = 'past_order_details';
+
+  const PastOrderDetails({Key? key}) : super(key: key);
 
 
   @override
@@ -112,7 +110,7 @@ class _PastOrderDetailsState extends State<PastOrderDetails> {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: MediaQuery.of(context).size.height*0.08,
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(10),
           ),
@@ -139,7 +137,7 @@ class _PastOrderDetailsState extends State<PastOrderDetails> {
             padding: const EdgeInsets.all(8.0),
             child: Text(
               LocaleKeys.orderDetails.tr(),
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
           ),
           Padding(
@@ -188,22 +186,25 @@ class _PastOrderDetailsState extends State<PastOrderDetails> {
                   '${LocaleKeys.orderStatus.tr()}: ',
                   style: TextStyle(fontSize: MediaQuery.of(context).size.width*0.045),
                 ),
-                IconButton(
+                (!isCompany) ? Text(
+                  orderProvider.orderData!['order_status'],
+                  style: TextStyle(fontSize: MediaQuery.of(context).size.width*0.045),
+                ) : IconButton(
                     onPressed: (){
                       sendNotification("Delivering your order", "Your order is in delivery now by the restaurant");
                       authService.orders.doc(receivedOrderDocID).update({
                         'order_status': 'done'
                       });
                     },
-                    icon: Icon(Icons.done_outline_rounded)),
-                IconButton(
+                    icon: const Icon(Icons.done_outline_rounded)),
+                (!isCompany) ? Container() : IconButton(
                     onPressed: (){
                       sendNotification("Your order cancelled", "Your order is cancelled by the restaurant");
                       authService.orders.doc(receivedOrderDocID).update({
                         'order_status': 'cancelled'
                       });
                     },
-                    icon: Icon(Icons.cancel_outlined))
+                    icon: const Icon(Icons.cancel_outlined))
               ],
             ),
           ),
@@ -239,7 +240,7 @@ class _PastOrderDetailsState extends State<PastOrderDetails> {
                   '${LocaleKeys.deliveryAddress.tr()}: ',
                   style: TextStyle(fontSize: MediaQuery.of(context).size.width*0.045),
                 ),
-                Icon(Icons.location_on_outlined),
+                const Icon(Icons.location_on_outlined),
                 GestureDetector(
                   onTap: (){
                     GeoPoint loc = orderProvider.orderData!['buyer_loc'];
@@ -256,6 +257,7 @@ class _PastOrderDetailsState extends State<PastOrderDetails> {
                         fontSize: MediaQuery.of(context).size.width*0.037),
                   ),
                 ),
+                
               ],
             ),
           ),
@@ -282,7 +284,7 @@ class _PastOrderDetailsState extends State<PastOrderDetails> {
                   '${LocaleKeys.phoneNumber.tr()}: ',
                   style: TextStyle(fontSize: MediaQuery.of(context).size.width*0.045),
                 ),
-                Icon(Icons.call_rounded),
+                const Icon(Icons.call_rounded),
                 GestureDetector(
                   onTap: (){
                     _launchCaller(orderProvider.orderData!['buyer_mobile']);
@@ -340,8 +342,8 @@ class _PastOrderDetailsState extends State<PastOrderDetails> {
           //     ],
           //   ),
           // ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
+          const Padding(
+            padding: EdgeInsets.all(8.0),
             child: Divider(
               thickness: 1,
             ),
@@ -350,12 +352,12 @@ class _PastOrderDetailsState extends State<PastOrderDetails> {
             padding: const EdgeInsets.all(8.0),
             child: Text(
               LocaleKeys.productDetails.tr(),
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
           ),
           ListView.builder(
             shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
+            physics: const NeverScrollableScrollPhysics(),
             itemCount: orderProvider.orderData!['products'].length,
             itemBuilder: (BuildContext context, int index) {
               var data = orderProvider.orderData!['products'][index];
@@ -368,13 +370,13 @@ class _PastOrderDetailsState extends State<PastOrderDetails> {
                     ),
                     title: Text(
                       data['title'],
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontFamily: 'Lato',
                           color: Colors.black, fontWeight: FontWeight.bold),
                     ),
                     subtitle: Text(
                       '${LocaleKeys.currency.tr()} ${data['price']}',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontFamily: 'Lato',
                           color: Colors.black, fontWeight: FontWeight.bold),
                     ),
@@ -383,13 +385,13 @@ class _PastOrderDetailsState extends State<PastOrderDetails> {
                       children: [
                         Text(
                           '${LocaleKeys.quantity.tr()}: ',
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontFamily: 'Lato',
                               color: Colors.black, fontWeight: FontWeight.bold),
                         ),
                         Text(
                           data['quantity'].toString(),
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontFamily: 'Lato',
                               color: Colors.black, fontWeight: FontWeight.bold),
                         ),
@@ -397,7 +399,7 @@ class _PastOrderDetailsState extends State<PastOrderDetails> {
                     )
                   ),
 
-                  Divider(
+                  const Divider(
                     thickness: 1,
                   )
                 ],

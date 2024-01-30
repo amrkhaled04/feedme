@@ -4,7 +4,6 @@ import 'package:bechdal_app/l10n/locale_keys.g.dart';
 import 'package:bechdal_app/screens/main_navigatiion_screen.dart';
 import 'package:bechdal_app/constants/colors.dart';
 import 'package:bechdal_app/screens/orders/received_orders_screen.dart';
-import 'package:bechdal_app/screens/welcome_screen.dart';
 import 'package:bechdal_app/services/auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -32,6 +31,7 @@ CollectionReference companies = FirebaseFirestore.instance.collection('companies
 Future<QuerySnapshot<Object?>>? orders;
 List? companiesData;
 String? mtoken = " ";
+bool isCompany = false;
 
 class _SplashScreenState extends State<SplashScreen> {
   Auth authService = Auth();
@@ -40,7 +40,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
 
   var cartProvider;
-  bool isCompany = false;
+
 
 
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
@@ -86,8 +86,8 @@ class _SplashScreenState extends State<SplashScreen> {
         for (int i = 0; i < idList.length; i++) {
           if(authService.currentUser?.uid == idList[i]) {
             orders =
-                authService.orders.orderBy("created_at",descending: true).where('seller_uid',
-                    isEqualTo: authService.currentUser?.uid).orderBy("created_at",descending: true).get();
+                authService.orders.where('seller_uid',
+                    isEqualTo: authService.currentUser?.uid).orderBy("created_at",descending: false).get();
           }
         }
       }

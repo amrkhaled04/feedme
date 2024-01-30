@@ -14,12 +14,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:bechdal_app/utils.dart';
 import '../components/change_profile_photo.dart';
-import '../components/image_picker_widget.dart';
 import '../l10n/locale_keys.g.dart';
 import '../services/auth.dart';
-import 'auth/login_screen.dart';
-import 'location_screen.dart';
-import 'main_navigatiion_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   static const screenId = 'profile_screen';
@@ -54,12 +50,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
       ).image;
     } else {
-      return AssetImage('assets/avatar.png');
+      return const AssetImage('assets/avatar.png');
     }
   }
   late GoogleMapController googleMapController;
 
-  CameraPosition initialCameraPosition = CameraPosition(target: LatLng(37.42796133580664, -122.085749655962), zoom: 14);
+  CameraPosition initialCameraPosition = const CameraPosition(target: LatLng(37.42796133580664, -122.085749655962), zoom: 14);
 
   Set<Marker> markers = {};
 
@@ -119,7 +115,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                         AppBar(
                           toolbarHeight: MediaQuery.of(context).size.height*0.08,
-                          shape: RoundedRectangleBorder(
+                          shape: const RoundedRectangleBorder(
                             borderRadius: BorderRadius.vertical(
                               bottom: Radius.circular(10),
                             ),
@@ -149,7 +145,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 )
                               ]),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         // Container(
@@ -223,7 +219,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         //   ),
                         // ),
 
-                        Container(
+                        SizedBox(
                           width: MediaQuery.of(context).size.width*0.95,
                           height: MediaQuery.of(context).size.height*0.45,
                           child: Stack(
@@ -344,7 +340,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 }).then((value) {
                                   if (kDebugMode) {
                                     print(
-                                        manualAddress + 'inside manual selection');
+                                        '${manualAddress}inside manual selection');
                                   }
 
                                   if (countryValue.isEmpty || cityValue.isEmpty || stateValue.isEmpty || address.isEmpty )  {
@@ -403,7 +399,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Spacer(flex: 4,),
+          const Spacer(flex: 4,),
           Column(
             children: [
               InkWell(
@@ -412,7 +408,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   // ask user to delete profile image
 
                   return openBottomSheet(
-                      context: context, child: ChangeProfilePhoto()
+                      context: context, child: const ChangeProfilePhoto()
                   );
 
 
@@ -500,15 +496,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   onPressed: (){
                     Navigator.of(context).pushNamed('past_orders');
                   },
-                  child: Text(LocaleKeys.previousOrders.tr(),
-                      style: TextStyle(
-                          color: Colors.grey.shade200,
-                          fontSize: MediaQuery.of(context).size.height*0.02)),
                   style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                       backgroundColor: '#80cf70'.toColor(),
                       minimumSize: Size(MediaQuery.of(context).size.width*0.8, MediaQuery.of(context).size.height*0.075)
                   ),
+                  child: Text(LocaleKeys.previousOrders.tr(),
+                      style: TextStyle(
+                          color: Colors.grey.shade200,
+                          fontSize: MediaQuery.of(context).size.height*0.02)),
               ),
             ],
           ),
@@ -526,17 +522,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 }
 
               },
-              child: Text(LocaleKeys.switchLanguage.tr(),
-                  style: TextStyle(
-                      color: Colors.grey.shade200,
-                      fontSize: MediaQuery.of(context).size.height*0.02)),
               style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                   backgroundColor: '#80cf70'.toColor(),
                   minimumSize: Size(MediaQuery.of(context).size.width*0.8, MediaQuery.of(context).size.height*0.075)
               ),
+              child: Text(LocaleKeys.switchLanguage.tr(),
+                  style: TextStyle(
+                      color: Colors.grey.shade200,
+                      fontSize: MediaQuery.of(context).size.height*0.02)),
           ),
-          SizedBox(
+          const SizedBox(
             height: 15,
           ),
           ElevatedButton(
@@ -555,7 +551,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       fontSize: MediaQuery.of(context).size.height*0.02)),
 
           ),
-          SizedBox(
+          const SizedBox(
           height: 15,
 
           ),
@@ -585,7 +581,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       fontSize: MediaQuery.of(context).size.height*0.02)
               )
           ),
-          Spacer(flex: 4,),
+          const Spacer(flex: 4,),
         ],
       ),
     );

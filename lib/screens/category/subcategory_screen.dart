@@ -26,12 +26,12 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
   Widget build(BuildContext context) {
 
     String locale = context.locale.toString();
-    String category_name = locale == 'en' ? 'english_category_name' : 'arabic_category_name';
+    String categoryName = locale == 'en' ? 'english_category_name' : 'arabic_category_name';
 
     var categoryProvider = Provider.of<CategoryProvider>(context);
     return Scaffold(
       appBar: AppBar(
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(10),
           ),
@@ -44,7 +44,7 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
           size: MediaQuery.of(context).size.height * 0.04,
         ),
         title: Text(
-          widget.doc![category_name] ?? '',
+          widget.doc![categoryName] ?? '',
           style: TextStyle(color: Colors.grey.shade200,fontSize: MediaQuery.of(context).size.height*0.04),
         ),
       ),

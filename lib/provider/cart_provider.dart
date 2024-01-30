@@ -76,7 +76,7 @@ class CartProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  setCartBySellerId(seller_uid){
+  setCartBySellerId(sellerUid){
 
     if (UserService.guestUser){
 
@@ -86,7 +86,7 @@ class CartProvider with ChangeNotifier {
       return;
     }
 
-    this.seller_uid = seller_uid;
+    seller_uid = sellerUid;
 
     if (user == null) {
       return;
@@ -94,10 +94,10 @@ class CartProvider with ChangeNotifier {
 
     authService.carts
         .where('user_uid', isEqualTo: user!.uid)
-        .where('seller_uid', isEqualTo: seller_uid)
+        .where('seller_uid', isEqualTo: sellerUid)
         .get()
         .then((value) {
-          if (value.docs.length > 0) {
+          if (value.docs.isNotEmpty) {
             setCartDetails(value.docs[0]);
 
             cartDataMap = cartData!.data() as Map<String, dynamic>;

@@ -449,7 +449,7 @@ class _UserFormReviewState extends State<UserFormReview> {
                   InkWell(
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (builder) => LocationScreen(
+                          builder: (builder) => const LocationScreen(
                                 onlyPop: true,
                                 popToScreen: UserFormReview.screenId,
                               )));
@@ -479,7 +479,7 @@ class _UserFormReviewState extends State<UserFormReview> {
                                 contentPadding: const EdgeInsets.only(top: 15),
                               )),
                         ),
-                        Icon(Icons.arrow_forward_ios)
+                        const Icon(Icons.arrow_forward_ios)
                       ],
                     ),
                   ),

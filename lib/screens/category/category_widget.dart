@@ -1,5 +1,4 @@
 import 'package:bechdal_app/constants/colors.dart';
-import 'package:bechdal_app/extensions.dart';
 import 'package:bechdal_app/l10n/locale_keys.g.dart';
 import 'package:bechdal_app/provider/category_provider.dart';
 import 'package:bechdal_app/screens/category/category_list_screen.dart';
@@ -12,6 +11,8 @@ import 'package:provider/provider.dart';
 import 'subcategory_screen.dart';
 
 class CategoryWidget extends StatefulWidget {
+  const CategoryWidget({Key? key}) : super(key: key);
+
 
 
 
@@ -30,14 +31,14 @@ class _CategoryWidgetState extends State<CategoryWidget> {
 
     String locale = context.locale.toString();
 
-    String category_name = locale.contains('en') ? 'english_category_name' : 'arabic_category_name';
+    String categoryName = locale.contains('en') ? 'english_category_name' : 'arabic_category_name';
 
     var categoryProvider = Provider.of<CategoryProvider>(context);
     return Padding(
       padding: const EdgeInsets.only(left: 9, right: 7),
       child: FutureBuilder<QuerySnapshot>(
         future: authService.categories
-            .orderBy(category_name, descending: false)
+            .orderBy(categoryName, descending: false)
             .get(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
@@ -153,7 +154,7 @@ class _CategoryWidgetState extends State<CategoryWidget> {
                                   ),
                                   Flexible(
                                     child: Text(
-                                      doc[category_name],
+                                      doc[categoryName],
                                       textAlign: TextAlign.center,
                                       maxLines: 2,
                                       style: TextStyle(

@@ -1,5 +1,3 @@
-import 'package:bechdal_app/components/product_listing_widget.dart';
-import 'package:bechdal_app/constants/colors.dart';
 import 'package:bechdal_app/extensions.dart';
 import 'package:bechdal_app/provider/category_provider.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -15,12 +13,12 @@ class ProductByCategory extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var categoryProvider = Provider.of<CategoryProvider>(context);
-    String category_name = context.locale.toString() == 'en' ? categoryProvider.selectedCategory!['english_category_name'] : categoryProvider.selectedCategory!['arabic_category_name'];
-    String subcategory_name =
+    String categoryName = context.locale.toString() == 'en' ? categoryProvider.selectedCategory!['english_category_name'] : categoryProvider.selectedCategory!['arabic_category_name'];
+    String subcategoryName =
         context.locale.toString() == 'en' ? categoryProvider.selectedSubCategory!['english_subcategory_name'] : categoryProvider.selectedSubCategory!['arabic_subcategory_name'];
     return Scaffold(
         appBar: AppBar(
-          shape: RoundedRectangleBorder(
+          shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(
               bottom: Radius.circular(10),
             ),
@@ -35,8 +33,9 @@ class ProductByCategory extends StatelessWidget {
           title: Text(
             (categoryProvider.selectedSubCategory == null)
                 ? 'Cars'
-                : '${category_name} ${'> ${subcategory_name}'}',
+                : '$categoryName ${'> $subcategoryName'}',
             style: TextStyle(
+              fontSize: MediaQuery.of(context).size.width*0.08,
               color: Colors.grey.shade200,
             ),
           ),

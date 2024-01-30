@@ -6,6 +6,7 @@ class Sellers extends SearchModel{
 
   double rating = 0;
 
+  @override
   DocumentSnapshot? document;
   Sellers(
       {

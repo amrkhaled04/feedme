@@ -11,7 +11,6 @@ import 'package:bechdal_app/services/user.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:galleryimage/galleryimage.dart';
 import 'package:provider/provider.dart';
 
 import '../l10n/locale_keys.g.dart';

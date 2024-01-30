@@ -1,5 +1,4 @@
 import 'package:bechdal_app/constants/validators.dart';
-import 'package:bechdal_app/extensions.dart';
 import 'package:bechdal_app/models/product_model.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +13,7 @@ class SearchCard extends StatefulWidget {
   final String address;
   final SearchModel item;
 
-  SearchCard({
+  const SearchCard({
     required this.address,
     required this.item,
     Key? key,
@@ -230,7 +229,7 @@ class _SearchCardState extends State<SearchCard> {
                           ),
                         ],
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       RatingBar.builder(

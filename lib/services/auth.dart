@@ -2,8 +2,6 @@
 
 import 'package:bechdal_app/constants/widgets.dart';
 import 'package:bechdal_app/forms/register_form.dart';
-import 'package:bechdal_app/screens/auth/email_verify_screen.dart';
-import 'package:bechdal_app/screens/auth/phone_otp_screen.dart';
 import 'package:bechdal_app/screens/location_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -129,15 +127,11 @@ class Auth {
           await _firebaseAuth.signInWithCredential(credential);
 
       Navigator.pop(context);
-      if (userCredential != null) {
-        getAdminCredentialPhoneNumber(context, userCredential.user);
-      } else {
-        wrongDetailsAlertBox('Login Failed, Please retry again.', context);
-      }
-    } catch (e) {
+      getAdminCredentialPhoneNumber(context, userCredential.user);
+        } catch (e) {
       Navigator.pop(context);
       wrongDetailsAlertBox(
-          'The details you entered is not matching with our database. Please validate details again, before proceeding. ',
+          'The details you entered is not matching. Please validate details again, before proceeding. ',
           context);
     }
   }
@@ -243,38 +237,33 @@ class Auth {
         print(credential);
       }
       Navigator.pop(context);
-      if (credential.user!.uid != null) {
-        final SharedPreferences prefs = await _prefs;
-        await prefs.setBool('guest', false);
-        var user_id = FirebaseAuth.instance.currentUser!.uid;
-        bool isCompany = false;
-        for(var id in idList){
-          if(id == user_id){
-            isCompany = true;
-            companies.doc(id).update({
-              'token':mtoken
-            });
-            Navigator.of(context).pushNamedAndRemoveUntil(ReceivedOrdersScreen.screenId, (route) => false);
-            break;
-          }
+      final SharedPreferences prefs = await _prefs;
+      await prefs.setBool('guest', false);
+      var userId = FirebaseAuth.instance.currentUser!.uid;
+      bool isCompany = false;
+      for(var id in idList){
+        if(id == userId){
+          isCompany = true;
+          companies.doc(id).update({
+            'token':mtoken
+          });
+          Navigator.of(context).pushNamedAndRemoveUntil(ReceivedOrdersScreen.screenId, (route) => false);
+          break;
         }
-
-        // check if user has a location stored
-
-        (!isCompany)?authService.users.doc(credential.user!.uid).get().then((value) {
-          if (value['address'] == '') {
-            Navigator.pushReplacementNamed(context, LocationScreen.screenId);
-          } else {
-            Navigator.pushReplacementNamed(
-                context, MainNavigationScreen.screenId);
-          }
-        }):null;
-
-      } else {
-        customSnackBar(
-            context: context, content: 'Please check with your credentials');
       }
-    } on FirebaseAuthException catch (e) {
+
+      // check if user has a location stored
+
+      (!isCompany)?authService.users.doc(credential.user!.uid).get().then((value) {
+        if (value['address'] == '') {
+          Navigator.pushReplacementNamed(context, LocationScreen.screenId);
+        } else {
+          Navigator.pushReplacementNamed(
+              context, MainNavigationScreen.screenId);
+        }
+      }):null;
+
+        } on FirebaseAuthException catch (e) {
       Navigator.pop(context);
       if (e.code == 'user-not-found') {
         customSnackBar(
@@ -318,7 +307,7 @@ class Auth {
         customSnackBar(
             context: context,
             content:
-                'Failed to add user to database, please try again $onError');
+                'Failed to add user, please try again $onError');
       });
     } on FirebaseAuthException catch (e) {
       Navigator.pop(context);

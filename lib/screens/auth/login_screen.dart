@@ -1,5 +1,4 @@
 import 'package:bechdal_app/components/large_heading_widget.dart';
-import 'package:bechdal_app/constants/colors.dart';
 import 'package:bechdal_app/extensions.dart';
 import 'package:bechdal_app/forms/login_form.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -31,7 +30,7 @@ class _LoginScreenState extends State<LoginScreen> {
           Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         LargeHeadingWidget(
             heading: LocaleKeys.welcome.tr(), subHeading: LocaleKeys.loginToContinue.tr()),
-        LogInForm(),
+        const LogInForm(),
       ]),
     );
   }

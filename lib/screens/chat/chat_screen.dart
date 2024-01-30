@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:bechdal_app/constants/colors.dart';
 import 'package:bechdal_app/screens/category/category_list_screen.dart';
@@ -57,7 +56,7 @@ _body({required Auth authService, required UserService firebaseUser}) {
                   child: CircularProgressIndicator(color: secondaryColor),
                 );
               }
-              if (snapshot.data!.docs.length == 0) {
+              if (snapshot.data!.docs.isEmpty) {
                 return Center(
                     child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -105,7 +104,7 @@ _body({required Auth authService, required UserService firebaseUser}) {
                   child: CircularProgressIndicator(color: secondaryColor),
                 );
               }
-              if (snapshot.data!.docs.length == 0) {
+              if (snapshot.data!.docs.isEmpty) {
                 return Center(
                     child: Column(
                   mainAxisSize: MainAxisSize.min,
@@ -153,7 +152,7 @@ _body({required Auth authService, required UserService firebaseUser}) {
                   child: CircularProgressIndicator(color: secondaryColor),
                 );
               }
-              if (snapshot.data!.docs.length == 0) {
+              if (snapshot.data!.docs.isEmpty) {
                 return Center(
                     child: Column(
                   mainAxisSize: MainAxisSize.min,

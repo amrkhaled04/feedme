@@ -6,7 +6,6 @@ import 'package:bechdal_app/services/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 import '../../l10n/locale_keys.g.dart';
 
@@ -39,7 +38,7 @@ class _MyPostScreenState extends State<MyPostScreen> {
       initialIndex: 0,
       child: Scaffold(
         appBar: AppBar(
-          shape: RoundedRectangleBorder(
+          shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(
               bottom: Radius.circular(10),
             ),
@@ -82,7 +81,7 @@ bodyWidget({required Auth authService, required UserService firebaseUser, requir
               ),
             );
           }
-          if (snapshot.data!.docs.length == 0) {
+          if (snapshot.data!.docs.isEmpty) {
             return Center(
               child: Text(
                 LocaleKeys.noFavourites.tr(),

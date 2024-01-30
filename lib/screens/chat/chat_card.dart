@@ -1,11 +1,9 @@
 import 'package:bechdal_app/constants/colors.dart';
 import 'package:bechdal_app/constants/widgets.dart';
-import 'package:bechdal_app/models/popup_menu_model.dart';
 import 'package:bechdal_app/screens/chat/user_chat_screen.dart';
 import 'package:bechdal_app/services/auth.dart';
 import 'package:bechdal_app/services/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -62,7 +60,7 @@ class _ChatCardState extends State<ChatCard> {
       return Container();
     } else {
       return Container(
-        padding: EdgeInsets.only(top: 10, bottom: 10),
+        padding: const EdgeInsets.only(top: 10, bottom: 10),
         color: whiteColor,
         child: Stack(
           children: [

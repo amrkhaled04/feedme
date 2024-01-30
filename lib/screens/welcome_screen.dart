@@ -4,15 +4,12 @@ import 'package:bechdal_app/extensions.dart';
 import 'package:bechdal_app/l10n/locale_keys.g.dart';
 import 'package:bechdal_app/screens/auth/login_screen.dart';
 import 'package:bechdal_app/screens/auth/register_screen.dart';
-import 'package:bechdal_app/screens/home_screen.dart';
-import 'package:bechdal_app/screens/main_navigatiion_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../services/user.dart';
-import 'location_screen.dart';
 
 class WelcomeScreen extends StatelessWidget {
   static const screenId = 'welcome_screen';

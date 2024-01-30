@@ -7,11 +7,8 @@ import 'package:bechdal_app/extensions.dart';
 import 'package:bechdal_app/screens/orders/past_order_details.dart';
 import 'package:bechdal_app/screens/orders/received_orders_item.dart';
 import 'package:bechdal_app/services/user.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../l10n/locale_keys.g.dart';
@@ -21,6 +18,8 @@ import '../splash_screen.dart';
 
 class ReceivedOrdersScreen extends StatefulWidget {
   static const screenId = 'received_orders_screen';
+
+  const ReceivedOrdersScreen({Key? key}) : super(key: key);
 
   @override
   _ReceivedOrdersScreenState createState() => _ReceivedOrdersScreenState();
@@ -72,7 +71,7 @@ class _ReceivedOrdersScreenState extends State<ReceivedOrdersScreen> {
         setState(() {
         orders =
             authService.orders.where('seller_uid',
-                isEqualTo: authService.currentUser?.uid,).get();
+                isEqualTo: authService.currentUser?.uid,).orderBy("created_at",descending: true).get();
 
         });
       }
@@ -88,7 +87,7 @@ class _ReceivedOrdersScreenState extends State<ReceivedOrdersScreen> {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: MediaQuery.of(context).size.height*0.08,
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(10),
           ),
@@ -109,7 +108,7 @@ class _ReceivedOrdersScreenState extends State<ReceivedOrdersScreen> {
               children: [
                 Text(
                   LocaleKeys.openLabel.tr(),
-                  style: TextStyle(color: Colors.black),
+                  style: const TextStyle(color: Colors.black),
                 ),
                 Switch(
                   value: isOpen,
@@ -136,7 +135,7 @@ class _ReceivedOrdersScreenState extends State<ReceivedOrdersScreen> {
       body: RefreshIndicator(
         onRefresh: (){
           return Future.delayed(
-            Duration(seconds: 1),(){
+            const Duration(seconds: 1),(){
               getCompaniesData();
               getETA();
           }
@@ -145,6 +144,7 @@ class _ReceivedOrdersScreenState extends State<ReceivedOrdersScreen> {
         child: FutureBuilder(
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.hasError) {
+              print(snapshot.error.toString());
               return Center(
                 child: Text(LocaleKeys.somethingWentWrong.tr()),
               );
@@ -180,7 +180,7 @@ class _ReceivedOrdersScreenState extends State<ReceivedOrdersScreen> {
                     ),
                   ),
 
-                  Container(
+                  SizedBox(
                     width: MediaQuery.of(context).size.width*0.3,
                     child: TextField(
                       keyboardType: TextInputType.number,
@@ -236,7 +236,8 @@ class _ReceivedOrdersScreenState extends State<ReceivedOrdersScreen> {
           );
         },
         future: orders,
-      ),
+
+        ),
     )
     );
   }

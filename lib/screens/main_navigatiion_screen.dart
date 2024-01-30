@@ -1,21 +1,15 @@
 import 'package:bechdal_app/constants/colors.dart';
 import 'package:bechdal_app/extensions.dart';
-import 'package:bechdal_app/screens/category/category_list_screen.dart';
-import 'package:bechdal_app/screens/chat/chat_screen.dart';
 import 'package:bechdal_app/screens/home_screen.dart';
 import 'package:bechdal_app/screens/post/my_post_screen.dart';
 import 'package:bechdal_app/screens/profile_screen.dart';
-import 'package:bechdal_app/screens/seller_profile/seller_profile_screen.dart';
 import 'package:dot_navigation_bar/dot_navigation_bar.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../l10n/locale_keys.g.dart';
 import '../provider/cart_provider.dart';
 import '../services/user.dart';
 import 'cart/cart_screen.dart';
-import 'orders/past_orders_screen.dart';
 
 class MainNavigationScreen extends StatefulWidget {
   static const screenId = 'main_nav_screen';
@@ -40,7 +34,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
     return Container(
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20)),
+        borderRadius: const BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20)),
         boxShadow:[
           BoxShadow(
             color: Colors.grey.shade100,
@@ -72,7 +66,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
         items: [
           DotNavigationBarItem(
             icon: Container(
-              padding: EdgeInsets.only(left: 7),
+              padding: const EdgeInsets.only(left: 7),
               child: Icon(
                 Icons.home_filled,
                 size: 30,
@@ -98,19 +92,19 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                       fontFamily: 'Lato',
                       color: _index == 2 ? whiteColor : blackColor),
                 ),
+                backgroundColor: _index == 2 ? '#80cf70'.toColor() : whiteColor,
                 child: Icon(
                   Icons.shopping_bag_rounded,
                   color: _index == 2 ? secondaryColor : disabledColor,
                   size: 30,
                 ),
-                backgroundColor: _index == 2 ? '#80cf70'.toColor() : whiteColor,
               )
 
             ),
           ),
           DotNavigationBarItem(
             icon: Container(
-              padding: EdgeInsets.only(right: 7),
+              padding: const EdgeInsets.only(right: 7),
               child: Icon(
                 Icons.person_rounded,
                 color: _index == 3 ? '#80cf70'.toColor() : disabledColor,

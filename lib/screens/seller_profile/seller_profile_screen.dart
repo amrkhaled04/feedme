@@ -2,7 +2,6 @@
 
 import 'package:bechdal_app/extensions.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -19,7 +18,7 @@ class SellerProfileScreen extends StatefulWidget {
 
 
 
-  SellerProfileScreen({Key? key}) : super(key: key);
+  const SellerProfileScreen({Key? key}) : super(key: key);
 
 
 
@@ -51,7 +50,7 @@ class _SellerProfileScreenState extends State<SellerProfileScreen> {
     return Scaffold(
       backgroundColor: '#f9fcf7'.toColor(),
       appBar: AppBar(
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(10),
           ),
@@ -180,7 +179,7 @@ class _SellerProfileScreenState extends State<SellerProfileScreen> {
           ),
           child: Row(
             children: [
-              SizedBox(
+              const SizedBox(
                 width: 10,
               ),
 

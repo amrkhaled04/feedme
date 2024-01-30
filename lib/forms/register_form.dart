@@ -1,18 +1,16 @@
-import 'package:bechdal_app/components/custom_icon_button.dart';
-import 'package:bechdal_app/components/signup_buttons.dart';
 import 'package:bechdal_app/constants/colors.dart';
 import 'package:bechdal_app/constants/validators.dart';
 import 'package:bechdal_app/constants/widgets.dart';
 import 'package:bechdal_app/extensions.dart';
 import 'package:bechdal_app/l10n/locale_keys.g.dart';
-import 'package:bechdal_app/screens/auth/phone_auth_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:email_validator/email_validator.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../services/auth.dart';
+import '../services/user.dart';
 
 class RegisterForm extends StatefulWidget {
   const RegisterForm({
@@ -39,6 +37,7 @@ class _RegisterFormState extends State<RegisterForm> {
   late final FocusNode _passwordNode;
   late final FocusNode _confirmPasswordNode;
   final _formKey = GlobalKey<FormState>();
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   @override
   void initState() {
     _firstNameController = TextEditingController();
@@ -180,7 +179,7 @@ class _RegisterFormState extends State<RegisterForm> {
                               borderRadius: BorderRadius.circular(8.0),
                             ),
                             focusedErrorBorder: OutlineInputBorder(
-                              borderSide: BorderSide(
+                              borderSide: const BorderSide(
                               //   color: FlutterFlowTheme.of(context).error,
                               //   width: 2.0,
                               ),
@@ -295,7 +294,21 @@ class _RegisterFormState extends State<RegisterForm> {
                               lastName: _lastNameController.text,
                               email: _emailController.text,
                               password: _passwordController.text,
-                              isLoginUser: false);
+                              isLoginUser: false).then((value) async {
+                              print('signed up');
+                                await authService.getAdminCredentialEmailAndPassword(
+                                    context: context,
+                                    email: _emailController.text,
+                                    password: _passwordController.text,
+                                    isLoginUser: true);
+
+                                final SharedPreferences prefs = await _prefs;
+
+                                prefs.setBool('guestUser', false);
+
+                                UserService.guestUser = false;
+
+                          });
                         }
                       }),
                 ],

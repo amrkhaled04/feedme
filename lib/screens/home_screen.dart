@@ -1,13 +1,10 @@
-import 'dart:ui';
 
 import 'package:bechdal_app/extensions.dart';
 import 'package:bechdal_app/screens/category/category_widget.dart';
 import 'package:bechdal_app/components/main_appbar_with_search.dart';
-import 'package:bechdal_app/components/product_listing_widget.dart';
 import 'package:bechdal_app/constants/colors.dart';
 import 'package:bechdal_app/constants/widgets.dart';
 import 'package:bechdal_app/provider/category_provider.dart';
-import 'package:bechdal_app/screens/location_screen.dart';
 import 'package:bechdal_app/screens/seller_profile/profile_listing.dart';
 import 'package:bechdal_app/services/user.dart';
 import 'package:bechdal_app/utils.dart';
@@ -37,7 +34,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   late TextEditingController searchController;
   late CarouselController _controller;
-  int _current = 0;
+  final int _current = 0;
   late FocusNode searchNode;
   UserService firebaseUser = UserService();
   var cartProvider;
@@ -130,7 +127,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget homeBodyWidget() {
     return SingleChildScrollView(
-      physics: ScrollPhysics(),
+      physics: const ScrollPhysics(),
       child: Padding(
         padding: const EdgeInsets.only(right: 2,left: 2,bottom: 2,top: 5),
         child: Column(
@@ -138,11 +135,11 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             Container(
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(topLeft: Radius.circular(15),topRight: Radius.circular(15)),
+                  borderRadius: const BorderRadius.only(topLeft: Radius.circular(15),topRight: Radius.circular(15)),
                   color: '#f9fcf7'.toColor()),
               child: Column(
                 children: [
-                  CategoryWidget(),
+                  const CategoryWidget(),
                   Padding(
                     padding: EdgeInsets.only(
                         bottom: MediaQuery.of(context).size.height*0.035,
@@ -254,7 +251,7 @@ class locationTextWidget extends StatelessWidget {
           Icons.pin_drop,
           size: 18,
         ),
-        SizedBox(
+        const SizedBox(
           width: 10,
         ),
         Text(

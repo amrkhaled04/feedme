@@ -8,7 +8,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../constants/colors.dart';
 import '../../l10n/locale_keys.g.dart';
 import '../../provider/category_provider.dart';
 import '../../services/auth.dart';
@@ -34,7 +33,7 @@ class _ProfileListingState extends State<ProfileListing> {
 
 
 
-    QuerySnapshot categoryProducts = await authService.products.where('category', isEqualTo: categoryProvider.selectedCategory!['english_category_name']).get();
+    QuerySnapshot categoryProducts = await authService.products.where('category', isEqualTo: categoryProvider.selectedCategory!['english_category_name']).where('subcategory', isEqualTo: categoryProvider.selectedSubCategory!['english_subcategory_name']).get();
 
     // get seller data selling these products
 

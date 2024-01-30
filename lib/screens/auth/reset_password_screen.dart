@@ -29,7 +29,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 headingTextSize: 35,
                 subheadingTextSize: 20,
               ),
-              ResetForm(),
+              const ResetForm(),
             ]),
       ),
     );

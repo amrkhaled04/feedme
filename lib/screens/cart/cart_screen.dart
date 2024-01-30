@@ -11,7 +11,6 @@ import '../../constants/colors.dart';
 import '../../provider/cart_provider.dart';
 import '../../services/auth.dart';
 import '../../services/user.dart';
-import '../seller_profile/seller_profile_screen.dart';
 
 
 class CartScreen extends StatefulWidget {
@@ -55,7 +54,7 @@ class _CartScreenState extends State<CartScreen> {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: MediaQuery.of(context).size.height*0.08,
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(10),
           ),
@@ -90,7 +89,7 @@ class _CartScreenState extends State<CartScreen> {
                                 color: Colors.grey.shade500,
                                 fontSize: MediaQuery.of(context).size.height*0.02),
                             textAlign: TextAlign.center,maxLines: 3),
-                        Spacer(flex: 4,)
+                        const Spacer(flex: 4,)
                       ]
                   )
                 )
@@ -161,9 +160,6 @@ class _CartScreenState extends State<CartScreen> {
                              }
                              Navigator.pushNamed(context, 'checkout_screen');
                            },
-                           child: Text(LocaleKeys.checkout.tr(),style: TextStyle(
-                               color: Colors.grey.shade200,
-                               fontSize:MediaQuery.of(context).size.width*0.055 ),),
                            style: ElevatedButton.styleFrom(
                                backgroundColor: '#80cf70'.toColor() ,
                                shape: RoundedRectangleBorder(
@@ -171,6 +167,9 @@ class _CartScreenState extends State<CartScreen> {
                                ),
                                minimumSize: Size(MediaQuery.of(context).size.width*0.5, MediaQuery.of(context).size.height*0.065)
                            ),
+                           child: Text(LocaleKeys.checkout.tr(),style: TextStyle(
+                               color: Colors.grey.shade200,
+                               fontSize:MediaQuery.of(context).size.width*0.055 ),),
                          )
                        ],
                      ),

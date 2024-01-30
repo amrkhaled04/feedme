@@ -53,8 +53,11 @@ class Search {
                 onTap: () {
                   provider.setProductDetails(item.document);
                   provider.setSellerDetails(sellerDetails);
-                  if (item is Products) Navigator.pushNamed(context, ProductDetail.screenId);
-                  else Navigator.pushNamed(context, SellerProfileScreen.screenId);
+                  if (item is Products) {
+                    Navigator.pushNamed(context, ProductDetail.screenId);
+                  } else {
+                    Navigator.pushNamed(context, SellerProfileScreen.screenId);
+                  }
 
                 },
                 child: SearchCard(

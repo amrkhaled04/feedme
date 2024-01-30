@@ -182,9 +182,8 @@ openBottomSheet(
                         Navigator.pop(context);
                       },
                       style: ElevatedButton.styleFrom(
-                        shape: const CircleBorder(),
+                        shape: const CircleBorder(), backgroundColor: Colors.white,
                         padding: const EdgeInsets.all(10),
-                        primary: Colors.white,
                       ),
                       child: Icon(Icons.close, color: blackColor),
                     ),

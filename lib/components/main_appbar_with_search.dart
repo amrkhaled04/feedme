@@ -47,7 +47,7 @@ class _MainAppBarWithSearchState extends State<MainAppBarWithSearch> {
               buyerLoc = value['location'];
             });
     authService.products.get().then(((QuerySnapshot snapshot) {
-      snapshot.docs.forEach((doc) {
+      for (var doc in snapshot.docs) {
         products.add(Products(
             document: doc,
             title: doc['title'],
@@ -56,10 +56,10 @@ class _MainAppBarWithSearchState extends State<MainAppBarWithSearch> {
             subcategory: doc['subcategory'],
             price: doc['price']));
         getSellerAddress(doc['seller_uid']);
-      });
+      }
 
       authService.users.where('status', isEqualTo: 'seller').get().then((value) {
-        value.docs.forEach((doc) {
+        for (var doc in value.docs) {
 
           double rating = 0;
 
@@ -81,7 +81,7 @@ class _MainAppBarWithSearchState extends State<MainAppBarWithSearch> {
             }
           });
 
-        });
+        }
       });
 
 
@@ -104,7 +104,7 @@ class _MainAppBarWithSearchState extends State<MainAppBarWithSearch> {
     return Container(
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(
+          borderRadius: const BorderRadius.only(
               bottomLeft: Radius.circular(18),
               bottomRight: Radius.circular(18)),
           color: '#80cf70'.toColor()),
@@ -122,7 +122,7 @@ class _MainAppBarWithSearchState extends State<MainAppBarWithSearch> {
                 padding: EdgeInsets.only(left: 2.0,top: MediaQuery.of(context).size.height*0.037),
                 child: Text(
 
-                  LocaleKeys.hi.tr()+', '+buyerName,
+                  '${LocaleKeys.hi.tr()}, $buyerName',
                   style: TextStyle(
                     color: Colors.grey[100],
                     fontSize: context.locale.languageCode == 'en'?MediaQuery.of(context).size.height*0.035:

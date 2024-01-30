@@ -4,7 +4,6 @@ import 'package:bechdal_app/l10n/locale_keys.g.dart';
 import 'package:bechdal_app/provider/category_provider.dart';
 import 'package:bechdal_app/screens/category/product_by_category_screen.dart';
 import 'package:bechdal_app/screens/category/subcategory_screen.dart';
-import 'package:bechdal_app/services/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +23,7 @@ class CategoryListScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: '#f9fcf7'.toColor(),
       appBar: AppBar(
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(10),
           ),
@@ -51,7 +50,7 @@ class CategoryListScreen extends StatelessWidget {
       required BuildContext context}) {
     Auth authService = Auth();
     String locale = context.locale.toString();
-    String category_name =
+    String categoryName =
         locale == 'en' ? 'english_category_name' : 'arabic_category_name';
 
     return FutureBuilder<QuerySnapshot>(
@@ -121,7 +120,7 @@ class CategoryListScreen extends StatelessWidget {
                             fit: BoxFit.fill,
                           )),
                       title: Text(
-                        doc[category_name],
+                        doc[categoryName],
                         style: TextStyle(
                           fontSize: MediaQuery.of(context).size.height * 0.0235,
                         ),

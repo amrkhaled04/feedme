@@ -37,13 +37,13 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    var _provider = Provider.of<CategoryProvider>(context);
+    var provider = Provider.of<CategoryProvider>(context);
     return Container(
       height: _image != null
           ? isUploading
               ? 150
               : 420
-          : _provider.imageUploadedUrls.isNotEmpty
+          : provider.imageUploadedUrls.isNotEmpty
               ? 320
               : 320,
       padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -74,12 +74,12 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
                         )
                       : Image.file(_image!),
                 )
-              : (_provider.imageUploadedUrls.isNotEmpty)
+              : (provider.imageUploadedUrls.isNotEmpty)
                   ? Expanded(
                       child: GalleryImage(
                           titleGallery: LocaleKeys.uploadedImages.tr(),
-                          numOfShowImages: _provider.imageUploadedUrls.length,
-                          imageUrls: _provider.imageUploadedUrls),
+                          numOfShowImages: provider.imageUploadedUrls.length,
+                          imageUrls: provider.imageUploadedUrls),
                     )
                   : Icon(
                       CupertinoIcons.photo_on_rectangle,
@@ -124,14 +124,12 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
                                 setState(() {
                                   isUploading = true;
                                   uploadFile(context, _image!.path).then((url) {
-                                    if (url != null) {
-                                      _provider.setImageList(url);
-                                      setState(() {
-                                        isUploading = false;
-                                        _image = null;
-                                      });
-                                    }
-                                  });
+                                    provider.setImageList(url);
+                                    setState(() {
+                                      isUploading = false;
+                                      _image = null;
+                                    });
+                                                                    });
                                 });
                               },
                               style: ButtonStyle(

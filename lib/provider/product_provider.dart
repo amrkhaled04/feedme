@@ -18,10 +18,10 @@ class ProductProvider with ChangeNotifier {
     var totalUsers = 0.0;
 
     authService.reviews.where('seller_uid', isEqualTo: sellerDetails?.id).get().then((value) {
-      value.docs.forEach((element) {
+      for (var element in value.docs) {
         totalRating += element['rating'];
         totalUsers += 1;
-      });
+      }
       avgRating = totalRating / totalUsers;
       if (avgRating.isNaN) {
         avgRating = 0;

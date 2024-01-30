@@ -5,10 +5,7 @@ import 'package:bechdal_app/services/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_bubble/bubble_type.dart';
 import 'package:flutter_chat_bubble/chat_bubble.dart';
-import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_5.dart';
-import 'package:intl/intl.dart';
 
 import '../../l10n/locale_keys.g.dart';
 
@@ -49,7 +46,7 @@ class _ChatStreamState extends State<ChatStream> {
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.hasError) {
-              return Center(
+              return const Center(
                 child: Text('Fetching error..'),
               );
             }

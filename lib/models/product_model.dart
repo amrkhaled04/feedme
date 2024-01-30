@@ -8,6 +8,7 @@ class Products extends SearchModel{
   String? subcategory;
   String? price;
   num? postDate;
+  @override
   DocumentSnapshot? document;
   Products(
       {this.title,

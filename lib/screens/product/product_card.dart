@@ -1,4 +1,3 @@
-import 'package:bechdal_app/constants/colors.dart';
 import 'package:bechdal_app/extensions.dart';
 import 'package:bechdal_app/provider/product_provider.dart';
 import 'package:bechdal_app/screens/product/product_details_screen.dart';
@@ -6,9 +5,7 @@ import 'package:bechdal_app/services/auth.dart';
 import 'package:bechdal_app/services/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../l10n/locale_keys.g.dart';

@@ -15,11 +15,11 @@ class UserService {
       BuildContext context, Map<String, dynamic> data) {
     User? user = FirebaseAuth.instance.currentUser;
     return authService.users.doc(user!.uid).update(data).then((value) {
-      customSnackBar(context: context, content: 'Location updated on database');
+      customSnackBar(context: context, content: 'Location updated');
     }).catchError((error) {
       customSnackBar(
           context: context,
-          content: 'location cannot be updated in database due to $error');
+          content: 'location cannot be updated due to $error');
     });
   }
 

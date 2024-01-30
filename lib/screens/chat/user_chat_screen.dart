@@ -1,10 +1,8 @@
 import 'package:bechdal_app/constants/widgets.dart';
-import 'package:bechdal_app/models/popup_menu_model.dart';
 import 'package:bechdal_app/screens/chat/chat_stream.dart';
 import 'package:bechdal_app/constants/colors.dart';
 import 'package:bechdal_app/provider/product_provider.dart';
 import 'package:bechdal_app/services/user.dart';
-import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -85,7 +83,7 @@ class _UserChatScreenState extends State<UserChatScreen> {
                         },
                         onSubmitted: (value) {
                           /// Pressing Enter and Sending Message Case
-                          if (value.length > 0) {
+                          if (value.isNotEmpty) {
                             sendMessage();
                           }
                         },
@@ -104,13 +102,13 @@ class _UserChatScreenState extends State<UserChatScreen> {
                     ),
                     IconButton(
                       onPressed: () {},
-                      icon: Icon(Icons.attach_file),
+                      icon: const Icon(Icons.attach_file),
                     ),
                     Visibility(
                       visible: send,
                       child: IconButton(
                         onPressed: sendMessage,
-                        icon: Icon(Icons.send),
+                        icon: const Icon(Icons.send),
                       ),
                     ),
                   ],
@@ -136,7 +134,7 @@ class _UserChatScreenState extends State<UserChatScreen> {
             style: TextStyle(color: blackColor),
           ),
           actions: [
-            IconButton(onPressed: () {}, icon: Icon(Icons.call)),
+            IconButton(onPressed: () {}, icon: const Icon(Icons.call)),
             customPopUpMenu(
               context: context,
               chatroomId: widget.chatroomId,

@@ -351,7 +351,7 @@ class _SellCarFormState extends State<SellCarForm> {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 InkWell(
@@ -383,7 +383,7 @@ class _SellCarFormState extends State<SellCarForm> {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 InkWell(
@@ -414,7 +414,7 @@ class _SellCarFormState extends State<SellCarForm> {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 TextFormField(
@@ -565,7 +565,7 @@ class _SellCarFormState extends State<SellCarForm> {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 categoryProvider.imageUploadedUrls.isNotEmpty
@@ -574,7 +574,7 @@ class _SellCarFormState extends State<SellCarForm> {
                         numOfShowImages:
                             categoryProvider.imageUploadedUrls.length,
                         imageUrls: categoryProvider.imageUploadedUrls)
-                    : SizedBox(),
+                    : const SizedBox(),
               ],
             ),
           ),

@@ -3,15 +3,10 @@ import 'package:bechdal_app/extensions.dart';
 import 'package:bechdal_app/provider/category_provider.dart';
 import 'package:bechdal_app/provider/product_provider.dart';
 import 'package:bechdal_app/screens/product/product_card.dart';
-import 'package:bechdal_app/screens/product/product_details_screen.dart';
 import 'package:bechdal_app/services/auth.dart';
-import 'package:bechdal_app/services/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../l10n/locale_keys.g.dart';
@@ -42,14 +37,14 @@ class _ProductListingState extends State<ProductListing> {
   Future<void> getSellers() async {
     var categoryProvider = Provider.of<CategoryProvider>(context, listen: false);
     var productProvider = Provider.of<ProductProvider>(context, listen: false);
-    List seller_ids = [];
+    List sellerIds = [];
     QuerySnapshot data = await authService.products.where('category', isEqualTo: categoryProvider.selectedCategory!['english_category_name']).get();
     setState(() {
-      seller_ids = List.from(data.docs.map((doc) => doc['seller_uid']).toList());
+      sellerIds = List.from(data.docs.map((doc) => doc['seller_uid']).toList());
 
       // get seller details
-      for(int i = 0; i<seller_ids.length;i++){
-        authService.users.doc(seller_ids[i]).get().then((value) {
+      for(int i = 0; i<sellerIds.length;i++){
+        authService.users.doc(sellerIds[i]).get().then((value) {
           sellers.add(value);
         });
       }

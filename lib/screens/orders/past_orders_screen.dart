@@ -5,19 +5,14 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:bechdal_app/extensions.dart';
 import 'package:bechdal_app/provider/order_provider.dart';
 import 'package:bechdal_app/screens/orders/past_order_details.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants/colors.dart';
 import '../../l10n/locale_keys.g.dart';
 import '../../services/auth.dart';
 import '../../services/user.dart';
-import '../product/product_card.dart';
-import '../product/product_details_screen.dart';
 
 class PastOrdersScreen extends StatefulWidget {
   static const String screenId = 'past_orders';
@@ -51,7 +46,7 @@ class _PastOrdersScreenState extends State<PastOrdersScreen> {
 
       appBar: AppBar(
         toolbarHeight: MediaQuery.of(context).size.height*0.08,
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(10),
           ),
@@ -78,12 +73,12 @@ class _PastOrdersScreenState extends State<PastOrdersScreen> {
           onPressed: () {
             Navigator.pushNamed(context, 'login_screen');
           },
-          child: Text(LocaleKeys.pleaseLoginToSeePastOrders.tr()),
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.transparent,
             foregroundColor: secondaryColor,
             shadowColor: Colors.transparent,
           ),
+          child: Text(LocaleKeys.pleaseLoginToSeePastOrders.tr()),
         ),
       )
           :

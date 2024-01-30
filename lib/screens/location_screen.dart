@@ -89,7 +89,7 @@ class _BottomLocationPermissionWidgetState
 
   late GoogleMapController googleMapController;
 
-  CameraPosition initialCameraPosition = CameraPosition(target: LatLng(37.42796133580664, -122.085749655962), zoom: 14);
+  CameraPosition initialCameraPosition = const CameraPosition(target: LatLng(37.42796133580664, -122.085749655962), zoom: 14);
 
   Set<Marker> markers = {};
   UserService firebaseUser = UserService();
@@ -165,7 +165,7 @@ class _BottomLocationPermissionWidgetState
                       ),
                       AppBar(
                         toolbarHeight: MediaQuery.of(context).size.height*0.08,
-                        shape: RoundedRectangleBorder(
+                        shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.vertical(
                             bottom: Radius.circular(10),
                           ),
@@ -195,7 +195,7 @@ class _BottomLocationPermissionWidgetState
                           )
                         ]),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       // Container(
@@ -269,7 +269,7 @@ class _BottomLocationPermissionWidgetState
                       //   ),
                       // ),
 
-                      Container(
+                      SizedBox(
                         width: MediaQuery.of(context).size.width*0.95,
                         height: MediaQuery.of(context).size.height*0.45,
                         child: Stack(
@@ -390,7 +390,7 @@ class _BottomLocationPermissionWidgetState
                               }).then((value) {
                                 if (kDebugMode) {
                                   print(
-                                      manualAddress + 'inside manual selection');
+                                      '${manualAddress}inside manual selection');
                                 }
 
                                 if (countryValue.isEmpty || cityValue.isEmpty || stateValue.isEmpty || address.isEmpty )  {

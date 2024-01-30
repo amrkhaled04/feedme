@@ -4,16 +4,12 @@
 import 'dart:convert';
 
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:bechdal_app/constants/colors.dart';
 import 'package:bechdal_app/screens/checkout_lottie.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:bechdal_app/extensions.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -21,12 +17,13 @@ import '../../l10n/locale_keys.g.dart';
 import '../../provider/cart_provider.dart';
 import '../../services/auth.dart';
 import '../../services/user.dart';
-import '../cart/cart_screen.dart';
 import '../product/product_details_screen.dart';
 import '../splash_screen.dart';
 
 class CheckoutScreen extends StatefulWidget {
   static const String screenId = 'checkout_screen';
+
+  const CheckoutScreen({Key? key}) : super(key: key);
 
 
   @override
@@ -104,7 +101,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: MediaQuery.of(context).size.height*0.08,
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(10),
           ),
@@ -129,7 +126,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot){
 
       if (snapshot.connectionState == ConnectionState.waiting) {
-        return Center(
+        return const Center(
           child: CircularProgressIndicator(),
         );
       }
@@ -141,7 +138,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           child: Column(
               children: [
                 Container(
-                  padding: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
                   child: Row(
 
                     children: [
@@ -167,7 +164,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
                   child: Row(
                     children: [
                       Text(
@@ -177,7 +174,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Spacer(),
+                      const Spacer(),
                       Text(
                         snapshot.data['name'],
                         style: TextStyle(
@@ -188,7 +185,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
                   child: Row(
                     children: [
                       Text(
@@ -198,7 +195,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Spacer(),
+                      const Spacer(),
                       Text(
                         snapshot.data['mobile'],
                         style: TextStyle(
@@ -211,7 +208,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 ),
 
                 Container(
-                  padding: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
                   child: Row(
                     children: [
                       Text(
@@ -221,7 +218,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Spacer(),
+                      const Spacer(),
                       Text(
                         LocaleKeys.cashOnDelivery.tr(),
                         style: TextStyle(
@@ -233,7 +230,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                 ),
 
                 Container(
-                  padding: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
                   child: Row(
                     children: [
                       Text(
@@ -247,7 +244,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
                   child: Row(
                     children: [
                       Text(
@@ -269,7 +266,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
                   child: Row(
                     children: [
                       Text(
@@ -280,7 +277,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Spacer(),
+                      const Spacer(),
                       Text(
                         '${LocaleKeys.currency.tr()} $shippingCost',
                         style: TextStyle(
@@ -292,7 +289,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
                   child: Row(
                     children: [
                       Text(
@@ -303,7 +300,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Spacer(),
+                      const Spacer(),
                       Text(
                         '$orderETA ${LocaleKeys.minutes.tr()} ',
                         style: TextStyle(
@@ -314,10 +311,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     ],
                   ),
                 ),
-                Spacer(),
+                const Spacer(),
                 // Confirm Order Button
                 Container(
-                  padding: EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(8),
                   child: Row(
                     children: [
                       Flexible(

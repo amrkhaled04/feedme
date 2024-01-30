@@ -1,10 +1,8 @@
 import 'dart:async';
 
-import 'package:avatar_view/avatar_view.dart';
 import 'package:bechdal_app/components/main_appbar_with_search.dart';
 import 'package:bechdal_app/extensions.dart';
 import 'package:bechdal_app/screens/auth/login_screen.dart';
-import 'package:bechdal_app/screens/seller_profile/profile_card.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cherry_toast/cherry_toast.dart';
 import 'package:cherry_toast/resources/arrays.dart';
@@ -13,7 +11,6 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:bechdal_app/constants/colors.dart';
 import 'dart:ui' as ui;
 import 'package:bechdal_app/provider/product_provider.dart';
-import 'package:bechdal_app/screens/chat/chat_screen.dart';
 import 'package:bechdal_app/screens/chat/user_chat_screen.dart';
 import 'package:bechdal_app/services/auth.dart';
 import 'package:bechdal_app/services/user.dart';
@@ -21,8 +18,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:intl/intl.dart';
-import 'package:like_button/like_button.dart';
 import 'package:map_launcher/map_launcher.dart' as launcher;
 import 'package:pie_chart/pie_chart.dart';
 import 'package:provider/provider.dart';
@@ -48,13 +43,13 @@ class _ProductDetailState extends State<ProductDetail> {
   Auth authService = Auth();
   UserService firebaseUser = UserService();
   bool _loading = true;
-  int _index = 0;
+  final int _index = 0;
   bool isLiked = false;
   List fav = [];
 
   @override
   void initState() {
-    Timer(Duration(seconds: 2), () {
+    Timer(const Duration(seconds: 2), () {
       setState(() {
         _loading = false;
       });
@@ -76,9 +71,9 @@ class _ProductDetailState extends State<ProductDetail> {
 
 
 
-    final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+    final Future<SharedPreferences> prefs0 = SharedPreferences.getInstance();
 
-    final SharedPreferences prefs = await _prefs;
+    final SharedPreferences prefs = await prefs0;
 
     if (prefs.getBool('guest') == true) {
       // pop everything from navigator
@@ -402,7 +397,7 @@ class _ProductDetailState extends State<ProductDetail> {
         .where('seller_uid', isEqualTo: productProvider.sellerDetails!['uid'])
         .get();
     reviewed.then((value) {
-      if (value.docs.length == 0) {
+      if (value.docs.isEmpty) {
         // Add rating
         authService.reviews.add(ratingData).then((value) {
           customSnackBar(
@@ -436,7 +431,7 @@ class _ProductDetailState extends State<ProductDetail> {
   }
 
   _body({
-    required DocumentSnapshot<dynamic?> data,
+    required DocumentSnapshot<dynamic> data,
     required String formattedDate,
     required ProductProvider productProvider,
     required CartProvider cartProvider,
@@ -470,7 +465,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                     CircularProgressIndicator(
                                       color: secondaryColor,
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 10,
                                     ),
                                     Text(
@@ -535,16 +530,16 @@ class _ProductDetailState extends State<ProductDetail> {
                                                 0.023,
                                           ),
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           width: 5,
                                         ),
                                       ],
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 2,
                                     ),
                                     Text(
-                                      '${LocaleKeys.currency.tr()} ${formattedPrice}',
+                                      '${LocaleKeys.currency.tr()} $formattedPrice',
                                       style: TextStyle(
                                         fontFamily: 'Lato',
                                         fontSize:
@@ -553,7 +548,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 10,
                                     ),
                                     Text(
@@ -565,7 +560,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                         fontWeight: FontWeight.w600,
                                       ),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 10,
                                     ),
                                     Row(
@@ -585,7 +580,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                                                   .height *
                                                               0.022),
                                                 ),
-                                                SizedBox(
+                                                const SizedBox(
                                                   height: 10,
                                                 ),
                                                 // Container(
@@ -614,7 +609,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                                 Divider(
                                                   color: blackColor,
                                                 ),
-                                                SizedBox(
+                                                const SizedBox(
                                                   height: 5,
                                                 ),
                                                 // check of nutrition facts are available
@@ -627,21 +622,21 @@ class _ProductDetailState extends State<ProductDetail> {
                                                       "Protein": double.parse(data['protein'].toString()),
                                                       "Carb": double.parse(data['carb'].toString()),
                                                       "Fats": double.parse(data['fats'].toString()),},
-                                                    animationDuration: Duration(milliseconds: 1050),
+                                                    animationDuration: const Duration(milliseconds: 1050),
                                                     chartLegendSpacing: 50,
                                                     chartRadius: MediaQuery.of(context).size.width / 3.2,
-                                                    colorList: [
-                                                      const Color(0xfffdcb6e),
-                                                      const Color(0xff0984e3),
-                                                      const Color(0xfffd79a8),
-                                                      const Color(0xffe17055),
-                                                      const Color(0xff6c5ce7),
+                                                    colorList: const [
+                                                      Color(0xfffdcb6e),
+                                                      Color(0xff0984e3),
+                                                      Color(0xfffd79a8),
+                                                      Color(0xffe17055),
+                                                      Color(0xff6c5ce7),
                                                     ],
                                                     initialAngleInDegree: 0,
                                                     chartType: ChartType.ring,
                                                     ringStrokeWidth: 16,
                                                     centerText: "Nutrients",
-                                                    legendOptions: LegendOptions(
+                                                    legendOptions: const LegendOptions(
                                                       showLegendsInRow: false,
                                                       legendPosition: LegendPosition.right,
                                                       showLegends: true,
@@ -683,7 +678,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                     Divider(
                                       color: blackColor,
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 5,
                                     ),
                                     TextButton(
@@ -709,7 +704,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                         fontSize: MediaQuery.of(context).size.height * 0.022
                                       ),),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       height: 15,
                                     ),
                                     Row(
@@ -723,7 +718,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                               ? NetworkImage(
                                               productProvider.sellerDetails![
                                               'profile_picture'])
-                                              : AssetImage(
+                                              : const AssetImage(
                                               'assets/avatar.png'
                                           )
                                                   as ImageProvider,
@@ -763,6 +758,12 @@ class _ProductDetailState extends State<ProductDetail> {
                                                               .sellerDetails![
                                                           'uid']);
                                                     },
+                                                    style:
+                                                    ElevatedButton.styleFrom(
+                                                      backgroundColor: Colors.transparent,
+                                                      shadowColor:
+                                                      Colors.transparent,
+                                                    ),
                                                     child: Row(
                                                       children: [
                                                         Text(
@@ -780,12 +781,6 @@ class _ProductDetailState extends State<ProductDetail> {
                                                           color: disabledColor.withOpacity(0.9),
                                                         ),
                                                       ],
-                                                    ),
-                                                    style:
-                                                    ElevatedButton.styleFrom(
-                                                      primary: Colors.transparent,
-                                                      shadowColor:
-                                                      Colors.transparent,
                                                     )),
 
                                               ],
@@ -799,10 +794,10 @@ class _ProductDetailState extends State<ProductDetail> {
                                               allowHalfRating: true,
                                               itemCount: 5,
                                               itemPadding:
-                                                  EdgeInsets.symmetric(
+                                                  const EdgeInsets.symmetric(
                                                       horizontal: 4.0),
                                               itemBuilder: (context, _) =>
-                                                  Icon(
+                                                  const Icon(
                                                 Icons.star,
                                                 color: Colors.amber,
                                               ),
@@ -816,7 +811,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                         ),
                                       ],
                                     ),
-                                    SizedBox(height: 10),
+                                    const SizedBox(height: 10),
                                     Divider(
                                       color: blackColor,
                                     ),
@@ -921,8 +916,8 @@ class _ProductDetailState extends State<ProductDetail> {
     final numberFormat = NumberFormat('##,##,###.#');
     // assigned to global variable to be used in delivery fee
     data = productProvider.productData;
-    var _price = double.parse(data!['price']);
-    var formattedPrice = numberFormat.format(_price);
+    var price = double.parse(data!['price']);
+    var formattedPrice = numberFormat.format(price);
     var date = DateTime.fromMicrosecondsSinceEpoch(data['posted_at']);
     var formattedDate = DateFormat.yMMMd().format(date);
     var rating = productProvider.avgRating;
@@ -933,7 +928,7 @@ class _ProductDetailState extends State<ProductDetail> {
     return Scaffold(
       backgroundColor: '#f9fcf7'.toColor(),
       appBar: AppBar(
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
             bottom: Radius.circular(10),
           ),
