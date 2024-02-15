@@ -1,4 +1,5 @@
 import 'package:bechdal_app/constants/validators.dart';
+import 'package:bechdal_app/extensions.dart';
 import 'package:bechdal_app/models/product_model.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -89,20 +90,25 @@ class _SearchCardState extends State<SearchCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 140,
+      height: MediaQuery.of(context).size.width*0.34,
       margin: const EdgeInsets.all(5),
       width: MediaQuery.of(context).size.width,
       child: Card(
+        color: Colors.white,
         elevation: 4,
         child: Padding(
           padding: const EdgeInsets.all(8),
           child: (item is Products) ? Row(
 
             children: [
-              SizedBox(
-                width: 120,
-                height: 120,
-                child: Image.network((item as Products).document!['images'][0]),
+              Container(
+                clipBehavior: Clip.antiAlias,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15)
+                ),
+                width: MediaQuery.of(context).size.width*0.3,
+                height: MediaQuery.of(context).size.width*0.35,
+                child: Image.network((item as Products).document!['images'][0],fit: BoxFit.fill,),
               ),
               const SizedBox(
                 width: 10,
@@ -117,18 +123,18 @@ class _SearchCardState extends State<SearchCard> {
                         Text(
                           (item as Products).title ?? '',
                           maxLines: 1,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 16,
+                            fontSize: MediaQuery.of(context).size.width*0.042,
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
                         Text(
                           '${LocaleKeys.currency.tr()} ${(item as Products).price != null ? intToStringFormatter((item as Products).price) : ''}',
                           maxLines: 1,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 12,
+                            fontSize: MediaQuery.of(context).size.width*0.034,
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
@@ -137,35 +143,14 @@ class _SearchCardState extends State<SearchCard> {
                     Text(
                       (item as Products).description ?? '',
                       maxLines: 2,
-                      style: const TextStyle(
-                        fontSize: 12,
+                      style: TextStyle(
+                        fontSize: MediaQuery.of(context).size.width*0.034,
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
                     const SizedBox(
                       height: 10,
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text((item as Products).postDate != null
-                            ? '${LocaleKeys.postedAt.tr()}: ${formattedTime((item as Products).postDate)}'
-                            : ''),
-                        Row(
-                          children: [
-                            const Icon(
-                              Icons.location_pin,
-                              size: 15,
-                            ),
-                            Text(
-                              address,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ],
-                        )
-                      ],
-                    )
                   ],
                 ),
               )
@@ -176,18 +161,27 @@ class _SearchCardState extends State<SearchCard> {
             child: Row(
 
               children: [
-                SizedBox(
-                    width: 120,
-                    height: 120,
+                Container(
+                    clipBehavior: Clip.antiAlias,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15)
+                    ),
+                    width: MediaQuery.of(context).size.width*0.3,
+                    height: MediaQuery.of(context).size.width*0.35,
                     child: Stack(
                       children:
                       [
-
-                        getProfileImage((item as Sellers).document),
-
+                        Container(
+                          width: MediaQuery.of(context).size.width*0.3,
+                          height: MediaQuery.of(context).size.width*0.35,
+                          child: Image.network(
+                            ((item as Sellers).document!.data() as Map)['profile_picture'].toString(),
+                            fit: BoxFit.fill,
+                          ),
+                        ),
                         (!isOpen) ? Container(
-                          height: 120,
-                          width: 120,
+                          width: MediaQuery.of(context).size.width*0.3,
+                          height: MediaQuery.of(context).size.width*0.3,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(7),
                             color: Colors.black.withOpacity(0.5),
@@ -221,9 +215,9 @@ class _SearchCardState extends State<SearchCard> {
                           Text(
                             (item as Sellers).name ?? '',
                             maxLines: 1,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontSize: 16,
+                              fontSize: MediaQuery.of(context).size.width*0.042,
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
@@ -238,7 +232,7 @@ class _SearchCardState extends State<SearchCard> {
                         direction: Axis.horizontal,
                         allowHalfRating: true,
                         itemCount: 5,
-                        itemSize: 20,
+                        itemSize: MediaQuery.of(context).size.width*0.05,
                         itemPadding: const EdgeInsets.symmetric(horizontal: 0.5),
                         itemBuilder: (context, _) => const Icon(
                           Icons.star,

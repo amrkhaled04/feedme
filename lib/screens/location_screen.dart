@@ -142,8 +142,6 @@ class _BottomLocationPermissionWidgetState
                         'location':
                         GeoPoint(value.latitude, value.longitude),
                         'address': address
-                      }).then((value) {
-                        customSnackBar(context: context, content: LocaleKeys.locationUpdatedSuccessfully.tr());
                       });
                     }
                     setState((){
@@ -198,77 +196,6 @@ class _BottomLocationPermissionWidgetState
                       const SizedBox(
                         height: 10,
                       ),
-                      // Container(
-                      //   padding: const EdgeInsets.symmetric(
-                      //       vertical: 10, horizontal: 10),
-                      //   child: TextFormField(
-                      //     decoration: InputDecoration(
-                      //         suffixIcon: const Icon(Icons.search),
-                      //         hintText: LocaleKeys.selectCityAreaOrNeighbourhood.tr(),
-                      //         hintStyle: TextStyle(
-                      //           color: greyColor,
-                      //           fontSize: 12,
-                      //         ),
-                      //         contentPadding: const EdgeInsets.all(20),
-                      //         border: OutlineInputBorder(
-                      //             borderRadius: BorderRadius.circular(8))),
-                      //   ),
-                      // ),
-                      // ListTile(
-                      //   onTap: () async {
-                      //     customSnackBar(context: context, content: LocaleKeys.fetchingLocation.tr());
-                      //     await getCurrentLocation(
-                      //         context, serviceEnabled, permission)
-                      //         .then((value) {
-                      //       if (value != null) {
-                      //         _initialcameraposition = LatLng(value.latitude, value.logitude);
-                      //         firebaseUser.updateFirebaseUser(context, {
-                      //           'location':
-                      //           GeoPoint(value.latitude, value.longitude),
-                      //           'address': address
-                      //         }).then((value) {
-                      //
-                      //           customSnackBar(context: context, content: LocaleKeys.locationUpdatedSuccessfully.tr());
-                      //
-                      //           return (countryValue.isEmpty || cityValue.isEmpty || stateValue.isEmpty || address.isEmpty )  ? null   : (widget.onlyPop == true)
-                      //               ? (widget.popToScreen.isNotEmpty)
-                      //               ? Navigator.of(context)
-                      //               .pushNamedAndRemoveUntil(
-                      //               widget.popToScreen,
-                      //                   (route) => false)
-                      //               : Navigator.of(context)
-                      //               .pushNamedAndRemoveUntil(
-                      //               MainNavigationScreen.screenId,
-                      //                   (route) => false)
-                      //               : Navigator.of(context)
-                      //               .pushNamedAndRemoveUntil(
-                      //               MainNavigationScreen.screenId,
-                      //                   (route) => false);
-                      //         });
-                      //       }
-                      //     });
-                      //   },
-                      //   horizontalTitleGap: 0,
-                      //   leading: Icon(
-                      //     Icons.my_location,
-                      //     color: secondaryColor,
-                      //   ),
-                      //   title: Text(
-                      //     LocaleKeys.useCurrentLocation.tr(),
-                      //     style: TextStyle(
-                      //       color: secondaryColor,
-                      //       fontWeight: FontWeight.bold,
-                      //     ),
-                      //   ),
-                      //   subtitle: Text(
-                      //     address == '' ? LocaleKeys.fetchCurrentLocation.tr() : address,
-                      //     style: TextStyle(
-                      //       color: greyColor,
-                      //       fontSize: 10,
-                      //     ),
-                      //   ),
-                      // ),
-
                       SizedBox(
                         width: MediaQuery.of(context).size.width*0.95,
                         height: MediaQuery.of(context).size.height*0.45,
@@ -283,6 +210,7 @@ class _BottomLocationPermissionWidgetState
                                   initialCameraPosition: initialCameraPosition,
                                   markers: markers,
                                   zoomControlsEnabled: false,
+                                  myLocationButtonEnabled: false,
                                   zoomGesturesEnabled: true,
                                   mapType: MapType.normal,
                                   onTap: (LatLng x){
@@ -317,8 +245,6 @@ class _BottomLocationPermissionWidgetState
                                           'location':
                                           GeoPoint(value.latitude, value.longitude),
                                           'address': address
-                                        }).then((value) {
-                                          customSnackBar(context: context, content: LocaleKeys.locationUpdatedSuccessfully.tr());
                                         });
                                       }
                                       setState((){

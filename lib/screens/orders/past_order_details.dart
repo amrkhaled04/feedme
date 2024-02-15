@@ -15,6 +15,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 
 import '../../l10n/locale_keys.g.dart';
@@ -38,8 +39,8 @@ class PastOrderDetails extends StatefulWidget {
 class _PastOrderDetailsState extends State<PastOrderDetails> {
   _launchCaller(String phonenum) async {
     String url = "tel:$phonenum";
-    if (await canLaunch(url)) {
-      await launch(url);
+    if (await canLaunchUrlString(url)) {
+      await launchUrlString(url);
     } else {
       throw 'Could not launch $url';
     }
@@ -47,8 +48,8 @@ class _PastOrderDetailsState extends State<PastOrderDetails> {
 
   static Future<void> openMap(double latitude, double longitude) async {
     String googleUrl = 'https://www.google.com/maps/search/?api=1&query=$latitude,$longitude';
-    if (await canLaunch(googleUrl)) {
-      await launch(googleUrl);
+    if (await canLaunchUrlString(googleUrl)) {
+      await launchUrlString(googleUrl,mode: LaunchMode.externalNonBrowserApplication);
     } else {
       throw 'Could not open the map.';
     }

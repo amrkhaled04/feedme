@@ -127,7 +127,7 @@ class _SplashScreenState extends State<SplashScreen> {
               companies.doc(id).update({
                 'token':mtoken
               });
-              Navigator.pushReplacementNamed(
+              await Navigator.pushReplacementNamed(
                   context, ReceivedOrdersScreen.screenId);
               break;
             }

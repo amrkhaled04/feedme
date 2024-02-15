@@ -162,10 +162,10 @@ class _ProductDetailState extends State<ProductDetail> {
         // update cart provider
 
         cartProvider.updateCartCountAndTotalPrice(1, double.parse(product['price']));
-        customSnackBar(
-          context: context,
-          content: LocaleKeys.addedToCart.tr(),
-        );
+        // customSnackBar(
+        //   context: context,
+        //   content: LocaleKeys.addedToCart.tr(),
+        // );
         cartProvider.refresh();
         Navigator.pop(context);
         Navigator.pop(context);

@@ -61,8 +61,7 @@ Future<dynamic> getCurrentLocation(context, serviceEnabled, permission) async {
   if (permission == LocationPermission.deniedForever) {
     return permission_handler.openAppSettings();
   }
-  return await Geolocator.getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.high);
+  return await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
 }
 
 Future<String> uploadFile(BuildContext context, String filePath) async {

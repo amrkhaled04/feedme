@@ -31,9 +31,10 @@ class Search {
                   toolbarHeight: MediaQuery.of(context).size.height*0.08,
                   backgroundColor: whiteColor,
                   elevation: 0.5,
-                  surfaceTintColor: primaryColor,
+                  surfaceTintColor: whiteColor,
+
                   iconTheme: IconThemeData(color: blackColor,size: MediaQuery.of(context).size.height*0.04,),
-                  actionsIconTheme: IconThemeData(color: blackColor))),
+                  actionsIconTheme: IconThemeData(color: blackColor)),),
           onQueryUpdate: (s) => print(s),
           items: [...products, ...sellers],
           searchLabel: LocaleKeys.searchMessage.tr(),

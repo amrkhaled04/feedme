@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bechdal_app/constants/colors.dart';
 import 'package:bechdal_app/extensions.dart';
 import 'package:bechdal_app/l10n/locale_keys.g.dart';
@@ -119,7 +121,9 @@ class _MainAppBarWithSearchState extends State<MainAppBarWithSearch> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: EdgeInsets.only(left: 2.0,top: MediaQuery.of(context).size.height*0.037),
+                padding: EdgeInsets.only(left: 2.0,top:
+                Platform.isAndroid?
+                MediaQuery.of(context).size.height*0.037:MediaQuery.of(context).size.height*0.05),
                 child: Text(
 
                   '${LocaleKeys.hi.tr()}, $buyerName',

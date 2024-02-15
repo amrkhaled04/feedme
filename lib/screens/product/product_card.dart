@@ -1,3 +1,4 @@
+import 'package:bechdal_app/constants/colors.dart';
 import 'package:bechdal_app/extensions.dart';
 import 'package:bechdal_app/provider/product_provider.dart';
 import 'package:bechdal_app/screens/product/product_details_screen.dart';
@@ -84,6 +85,7 @@ class _ProductCardState extends State<ProductCard> {
     Auth auth = Auth();
 
     return InkWell(
+      borderRadius: BorderRadius.circular(15),
       onTap: () {
         productProvider.setSellerDetails(sellerDetails);
         productProvider.setProductDetails(widget.data);
@@ -93,24 +95,25 @@ class _ProductCardState extends State<ProductCard> {
         margin: const EdgeInsets.all(5),
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: whiteColor,
           borderRadius: BorderRadius.circular(4),
           boxShadow: [
             BoxShadow(
-              color: '#e6eedf'.toColor(),
+               color: '#e6eedf'.toColor(),
               spreadRadius: 1,
               blurRadius: 2,
-              offset: const Offset(0, 1),
-            ),
-          ],
+              offset: const Offset(0, 1)
+            )
+          ]
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
+              color: '#f9fcf7'.toColor(),
                 alignment: Alignment.center,
-                height: 140,
+                height: MediaQuery.of(context).size.height*0.12,
                 child: Image.network(
                   widget.data['images'][0],
                   fit: BoxFit.fill,

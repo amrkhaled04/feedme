@@ -24,7 +24,10 @@ class DefaultFirebaseOptions {
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
-        return android;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for android - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
@@ -49,21 +52,12 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAWUcDbO3xF5ZNG4UKu_BrhQbGiU8hn34c',
-    appId: '1:617491688904:android:55abab27e482d0813164fd',
-    messagingSenderId: '617491688904',
-    projectId: 'feed-up-1f5c5',
-    storageBucket: 'feed-up-1f5c5.appspot.com',
-  );
-
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyD0f1M8SlTpJ7ymWvLSLxAlkeS_YFTX2ps',
-    appId: '1:617491688904:ios:ef0f1cc9c17770da3164fd',
+    appId: '1:617491688904:ios:7d031d7937e40a813164fd',
     messagingSenderId: '617491688904',
     projectId: 'feed-up-1f5c5',
     storageBucket: 'feed-up-1f5c5.appspot.com',
-    iosClientId: '617491688904-i0sa8br4rt17jpigj3eapdo9n07n78bl.apps.googleusercontent.com',
-    iosBundleId: 'com.example.bechdalApp',
+    iosBundleId: 'com.example.feedup',
   );
 }
