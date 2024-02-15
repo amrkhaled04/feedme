@@ -20,7 +20,7 @@ class CartScreen extends StatefulWidget {
   @override
   State<CartScreen> createState() => _CartScreenState();
 }
-
+GeoPoint? userLocation;
 class _CartScreenState extends State<CartScreen> {
 
   Auth authService = Auth();
@@ -46,7 +46,9 @@ class _CartScreenState extends State<CartScreen> {
 
     cartProvider = Provider.of<CartProvider>(context, listen: false);
 
-    // getCartCount();
+    firebaseUser.getUserData().then((value)async{
+      userLocation = await value['location'];
+    });
 
 
 

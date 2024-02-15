@@ -98,7 +98,7 @@ class _SplashScreenState extends State<SplashScreen> {
   permissionBasedNavigationFunc()  {
 
 
-    Timer(const Duration(seconds: 4), () async {
+    Timer(const Duration(seconds: 5), () async {
 
       final SharedPreferences prefs = await _prefs;
 
@@ -112,37 +112,31 @@ class _SplashScreenState extends State<SplashScreen> {
 
       FirebaseAuth.instance.authStateChanges().listen((User? user) async {
         if (user == null) {
-
           prefs.setBool('guest', true);
-
           UserService.guestUser = true;
-
-          Navigator.pushReplacementNamed(context, MainNavigationScreen.screenId);
+          await Navigator.pushReplacementNamed(context, MainNavigationScreen.screenId);
         } else {
-          cartProvider.setCartDetailsByUid(user.uid);
+          try {
+              cartProvider.setCartDetailsByUid(user.uid);
 
-          for(var id in idList){
-            if(id == user.uid){
-              isCompany = true;
-              companies.doc(id).update({
-                'token':mtoken
-              });
-              await Navigator.pushReplacementNamed(
-                  context, ReceivedOrdersScreen.screenId);
-              break;
+
+            for (var id in idList) {
+              if (id == user.uid) {
+                isCompany = true;
+                await companies.doc(id).update({'token': mtoken});
+                await Navigator.pushReplacementNamed(context, ReceivedOrdersScreen.screenId);
+                break;
+              }
             }
-          }
-         if (!isCompany){
-           authService.users.doc(authService.currentUser?.uid).update(
-             {
-               'token':mtoken
-             }
-           );
-           Navigator.pushReplacementNamed(
-          context, MainNavigationScreen.screenId);
-         }
-        }
 
+            if (!isCompany) {
+              authService.users.doc(user.uid).update({'token': mtoken});
+              await Navigator.pushReplacementNamed(context, MainNavigationScreen.screenId);
+            }
+          } catch (e) {
+            print('An error occurred: $e');
+          }
+        }
       });
     });
   }

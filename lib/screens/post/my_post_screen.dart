@@ -65,64 +65,64 @@ bodyWidget({required Auth authService, required UserService firebaseUser, requir
   var numberFormat = NumberFormat('#,##,###.##');
 
   return
-    TabBarView(children: [
-      StreamBuilder<QuerySnapshot>(
-          stream: authService.products
-              .where('favourites', arrayContains: firebaseUser.user!.uid)
-              .snapshots(),
-          builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-            if (snapshot.hasError) {
-              return Center(child: Text(LocaleKeys.errorLoadingProducts.tr()));
-            }
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
-                child: CircularProgressIndicator(
-                  color: secondaryColor,
-                ),
-              );
-            }
-            if (snapshot.data!.docs.isEmpty) {
-              return Center(
-                child: Text(
-                  LocaleKeys.noFavourites.tr(),
-                  style: TextStyle(
-                    color: blackColor,
-                  ),
-                ),
-              );
-            }
-            return Container(
-              padding: const EdgeInsets.fromLTRB(20, 5, 20, 0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: GridView.builder(
-                        scrollDirection: Axis.vertical,
-                        gridDelegate:
-                        const SliverGridDelegateWithMaxCrossAxisExtent(
-                          maxCrossAxisExtent: 200,
-                          childAspectRatio: 2 / 2,
-                          mainAxisExtent: 250,
-                          crossAxisSpacing: 8,
-                          mainAxisSpacing: 10,
-                        ),
-                        itemCount: snapshot.data!.size,
-                        itemBuilder: (BuildContext context, int index) {
-                          var data = snapshot.data!.docs[index];
-                          var price = double.parse(data['price']);
-                          String formattedPrice = numberFormat.format(price);
-                          return ProductCard(
-                            data: data,
-                            formattedPrice: formattedPrice,
-                            numberFormat: numberFormat,
-                            refreshCallBack: ref,
-                          );
-                        }),
-                  ),
-                ],
+  TabBarView(children: [
+    StreamBuilder<QuerySnapshot>(
+        stream: authService.products
+            .where('favourites', arrayContains: firebaseUser.user!.uid)
+            .snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasError) {
+            return Center(child: Text(LocaleKeys.errorLoadingProducts.tr()));
+          }
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(
+                color: secondaryColor,
               ),
             );
-          }),
-    ]);
+          }
+          if (snapshot.data!.docs.isEmpty) {
+            return Center(
+              child: Text(
+                LocaleKeys.noFavourites.tr(),
+                style: TextStyle(
+                  color: blackColor,
+                ),
+              ),
+            );
+          }
+          return Container(
+            padding: const EdgeInsets.fromLTRB(20, 5, 20, 0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: GridView.builder(
+                      scrollDirection: Axis.vertical,
+                      gridDelegate:
+                      const SliverGridDelegateWithMaxCrossAxisExtent(
+                        maxCrossAxisExtent: 200,
+                        childAspectRatio: 2/2,
+                        mainAxisExtent: 250,
+                        crossAxisSpacing: 8,
+                        mainAxisSpacing: 10,
+                      ),
+                      itemCount: snapshot.data!.size,
+                      itemBuilder: (BuildContext context, int index) {
+                        var data = snapshot.data!.docs[index];
+                        var price = double.parse(data['price']);
+                        String formattedPrice = numberFormat.format(price);
+                        return ProductCard(
+                          data: data,
+                          formattedPrice: formattedPrice,
+                          numberFormat: numberFormat,
+                          refreshCallBack: ref,
+                        );
+                      }),
+                ),
+              ],
+            ),
+          );
+        }),
+  ]);
 }

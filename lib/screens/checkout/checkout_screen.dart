@@ -5,6 +5,7 @@ import 'dart:convert';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:bechdal_app/screens/checkout_lottie.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:bechdal_app/extensions.dart';
@@ -17,6 +18,7 @@ import '../../l10n/locale_keys.g.dart';
 import '../../provider/cart_provider.dart';
 import '../../services/auth.dart';
 import '../../services/user.dart';
+import '../cart/cart_screen.dart';
 import '../product/product_details_screen.dart';
 import '../splash_screen.dart';
 
@@ -39,6 +41,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   UserService firebaseUser = UserService();
   String companyToken = "";
   String orderETA = "";
+  GeoPoint? companyLocation;
+  String? deliveryDuration;
+  String? deliveryDistance;
+  String? companyDelivRate;
 
   void sendNotification()async{
 
@@ -76,18 +82,47 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     }
   }
 
+  void extractData(String jsonString) {
+    Map<String, dynamic> data = jsonDecode(jsonString);
+    List<dynamic> routes = data['routes'];
+    Map<String, dynamic> firstRoute = routes.isNotEmpty ? routes[0] : null;
+    deliveryDuration = (firstRoute['duration']).toString();
+    deliveryDistance = (firstRoute['distance']).toString();
+    setState(() {
+      shippingCost = (double.parse(companyDelivRate!)*(double.parse(deliveryDistance!)/1000)).toInt();
+      deliveryDuration = ((double.parse(deliveryDuration!)/60 + int.parse(orderETA)).toInt()).toString();
+    });
+    }
+
+  void getDirections(compLat,compLong,userLat,userLong)async{
+    String url = "https://api.mapbox.com/directions/v5/mapbox/driving/$compLong,$compLat;$userLong,$userLat?geometries=geojson&access_token=pk.eyJ1IjoiZmVlZHVwMjQiLCJhIjoiY2xzbjJldDhmMHVpazJscGU4cnRyYXB4bSJ9.fOwlDV6gMiDWjC7SL2tkTw";
+    print(url);
+    try {
+      var response = await http.get(Uri.parse(url));
+
+      if (response.statusCode == 200) {
+        extractData(response.body);
+      } else {
+        print('Request failed with status: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Request failed with error: $e');
+    }
+
+  }
+
   @override
-  void initState() {
+  void initState(){
     authService.users.doc(FirebaseAuth.instance.currentUser?.uid).get().then((value) {
       for(int i = 0;i<idList.length;i++){
         if(data['seller_uid'] == idList[i]){
-          if(companiesData![i]['delivery'][value['city']] != null){
-            setState(() {
+          // if(companiesData![i]['delivery'][value['city']] != null){
+              companyLocation = companiesData![i]['location'];
               orderETA = companiesData![i]['eta'];
+              companyDelivRate = companiesData![i]['delivery_rate'];
               companyToken = companiesData![i]['token'];
-              shippingCost = int.parse(companiesData![i]['delivery'][value['city']]);
-            });
-          }
+              getDirections(companyLocation?.latitude, companyLocation?.longitude, userLocation?.latitude, userLocation?.longitude);
+          // }
         }
       }
     });
@@ -302,7 +337,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       ),
                       const Spacer(),
                       Text(
-                        '$orderETA ${LocaleKeys.minutes.tr()} ',
+                        '${deliveryDuration ?? 0} ${LocaleKeys.minutes.tr()} ',
                         style: TextStyle(
                           fontFamily: 'Lato',
                           fontSize: MediaQuery.of(context).size.width*0.045,
