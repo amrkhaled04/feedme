@@ -100,6 +100,9 @@ class _SplashScreenState extends State<SplashScreen> {
 
     Timer(const Duration(seconds: 4), () async {
 
+      if (idList.isEmpty){
+        await getCompaniesData();
+      }
       final SharedPreferences prefs = await _prefs;
 
       final bool guest = prefs.getBool('guest') ?? false;
