@@ -46,10 +46,10 @@ class _SplashScreenState extends State<SplashScreen> {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   @override
   void initState() {
-    permissionBasedNavigationFunc();
+    getCompaniesData();
     getToken();
     getPermission();
-    getCompaniesData();
+    permissionBasedNavigationFunc();
     super.initState();
   }
 
@@ -98,7 +98,7 @@ class _SplashScreenState extends State<SplashScreen> {
   permissionBasedNavigationFunc()  {
 
 
-    Timer(const Duration(seconds: 5), () async {
+    Timer(const Duration(seconds: 4), () async {
 
       final SharedPreferences prefs = await _prefs;
 
@@ -119,15 +119,18 @@ class _SplashScreenState extends State<SplashScreen> {
           try {
               cartProvider.setCartDetailsByUid(user.uid);
 
-
-            for (var id in idList) {
-              if (id == user.uid) {
-                isCompany = true;
-                await companies.doc(id).update({'token': mtoken});
-                await Navigator.pushReplacementNamed(context, ReceivedOrdersScreen.screenId);
-                break;
+              if (idList.isEmpty){
+                await getCompaniesData();
               }
-            }
+              for (var id in idList) {
+                if (id == user.uid) {
+                  isCompany = true;
+                  await companies.doc(id).update({'token': mtoken});
+                  await Navigator.pushReplacementNamed(
+                      context, ReceivedOrdersScreen.screenId);
+                  break;
+                }
+              }
 
             if (!isCompany) {
               authService.users.doc(user.uid).update({'token': mtoken});
