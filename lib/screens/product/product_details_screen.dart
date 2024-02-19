@@ -75,7 +75,7 @@ class _ProductDetailState extends State<ProductDetail> {
 
     final SharedPreferences prefs = await prefs0;
 
-    if (prefs.getBool('guest') == true) {
+    if (UserService.guestUser) {
       // pop everything from navigator
 
       Navigator.popUntil(context, (route) => route.isFirst);
@@ -96,33 +96,38 @@ class _ProductDetailState extends State<ProductDetail> {
     var product = productProvider.productData;
 
 
-    // check if there already existes a cart for another seller
+    // check if there already exists a cart for another seller
 
-    // if (cartProvider.cartData != null) {
-    //   if (cartProvider.cartData!['seller_uid'] != product!['seller_uid']) {
-    //     customOkCancelDialogBox(
-    //         context: context,
-    //         title: LocaleKeys.createNewCart.tr(),
-    //         content: LocaleKeys.clearCart.tr() + cartProvider.sellerDetails!['name'],
-    //         onPressed: () {
-    //           // delete cart
-    //
-    //           authService.carts
-    //               .doc(cartProvider.cartData!.id)
-    //               .delete()
-    //               .then((value) {
-    //             cartProvider.setCartDetails(null);
-    //             cartProvider.updateCartCountAndTotalPrice(0, 0);
-    //           }).catchError((error) {
-    //             customSnackBar(
-    //               context: context,
-    //               content: LocaleKeys.somethingWentWrong.tr(),
-    //             );
-    //           });
-    //         });
-    //     return;
-    //   }
-    // }
+    if (cartProvider.cartDataMap.isNotEmpty) {
+      if (cartProvider.cartDataMap['products'][0]['seller'] != product!['seller_uid']) {
+        customOkCancelDialogBox(
+            context: context,
+            title: LocaleKeys.createNewCart.tr(),
+            content: LocaleKeys.clearCart.tr() + cartProvider.cartDataMap!['seller_name'],
+            onPressed: () {
+              // delete cart
+
+              cartProvider.cartDataMap = {};
+              addToCart(cartProvider);
+              cartProvider.refresh();
+              Navigator.pop(context);
+
+              // authService.carts
+              //     .doc(cartProvider.cartData!.id)
+              //     .delete()
+              //     .then((value) {
+              //   cartProvider.setCartDetails(null);
+              //   cartProvider.updateCartCountAndTotalPrice(0, 0);
+              // }).catchError((error) {
+              //   customSnackBar(
+              //     context: context,
+              //     content: LocaleKeys.somethingWentWrong.tr(),
+              //   );
+              // });
+            });
+        return;
+      }
+    }
 
     Map<String, dynamic> cart = cartProvider.cartDataMap;
     // await authService.carts
@@ -275,6 +280,7 @@ class _ProductDetailState extends State<ProductDetail> {
         // });
         cartProvider.refresh();
       }
+      cartProvider.refresh();
 
     }
 
@@ -325,6 +331,75 @@ class _ProductDetailState extends State<ProductDetail> {
         }
       }
     });
+  }
+
+  PieChart getPieChart(DocumentSnapshot<dynamic> data) {
+    Map<String, double> dataMap = {};
+
+
+
+    // check if "calories" field is present in the data
+
+    if (data.data()?['calories'] != null && data['calories'] != "") {
+      dataMap.putIfAbsent("Calories", () => double.parse(data['calories']));
+    }
+
+    if (data.data()?['protein'] != null && data['protein'] != "") {
+      dataMap.putIfAbsent("Protein", () => double.parse(data['protein']));
+    }
+
+
+
+    if (data.data()?['fats'] != null && data['fats'] != "") {
+      dataMap.putIfAbsent("Fat", () => double.parse(data['fats']));
+    }
+
+    if (data.data()?['carb'] != null && data['carb'] != "") {
+      dataMap.putIfAbsent("Carbs", () => double.parse(data['carb']));
+    }
+
+
+
+    return PieChart(
+      dataMap: dataMap,
+      animationDuration: const Duration(milliseconds: 1050),
+      chartLegendSpacing: 50,
+      chartRadius: MediaQuery.of(context).size.width / 3.2,
+      colorList: const [
+        Color(0xfffdcb6e),
+        Color(0xff0984e3),
+        Color(0xfffd79a8),
+        Color(0xffe17055),
+        Color(0xff6c5ce7),
+      ],
+      initialAngleInDegree: 0,
+      chartType: ChartType.ring,
+      ringStrokeWidth: 16,
+      centerText: "Nutrients",
+      legendOptions: const LegendOptions(
+        showLegendsInRow: false,
+        legendPosition: LegendPosition.right,
+        showLegends: true,
+        legendShape: BoxShape.circle,
+        legendTextStyle: TextStyle(
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      chartValuesOptions: ChartValuesOptions(
+        chartValueStyle: TextStyle(
+            fontSize: 14,
+            color: blackColor,
+            fontWeight: FontWeight.bold
+        ),
+        showChartValueBackground:false ,
+        showChartValues: true,
+        showChartValuesInPercentage: false,
+        showChartValuesOutside: true,
+        decimalPlaces: 1,
+      ),
+      // gradientList: ---To add gradient colors---
+      // emptyColorGradient: ---Empty Color gradient---
+    );
   }
 
   @override
@@ -617,49 +692,7 @@ class _ProductDetailState extends State<ProductDetail> {
                                                 // if no, then show nothing
                                                 (data.data()['calories'] != null && data['calories'] != "") ? Directionality(
                                                   textDirection: ui.TextDirection.ltr,
-                                                  child: PieChart(
-                                                    dataMap: { "Calories": double.parse(data['calories'].toString()),
-                                                      "Protein": double.parse(data['protein'].toString()),
-                                                      "Carb": double.parse(data['carb'].toString()),
-                                                      "Fats": double.parse(data['fats'].toString()),},
-                                                    animationDuration: const Duration(milliseconds: 1050),
-                                                    chartLegendSpacing: 50,
-                                                    chartRadius: MediaQuery.of(context).size.width / 3.2,
-                                                    colorList: const [
-                                                      Color(0xfffdcb6e),
-                                                      Color(0xff0984e3),
-                                                      Color(0xfffd79a8),
-                                                      Color(0xffe17055),
-                                                      Color(0xff6c5ce7),
-                                                    ],
-                                                    initialAngleInDegree: 0,
-                                                    chartType: ChartType.ring,
-                                                    ringStrokeWidth: 16,
-                                                    centerText: "Nutrients",
-                                                    legendOptions: const LegendOptions(
-                                                      showLegendsInRow: false,
-                                                      legendPosition: LegendPosition.right,
-                                                      showLegends: true,
-                                                      legendShape: BoxShape.circle,
-                                                      legendTextStyle: TextStyle(
-                                                        fontWeight: FontWeight.bold,
-                                                      ),
-                                                    ),
-                                                    chartValuesOptions: ChartValuesOptions(
-                                                      chartValueStyle: TextStyle(
-                                                          fontSize: 14,
-                                                          color: blackColor,
-                                                          fontWeight: FontWeight.bold
-                                                      ),
-                                                      showChartValueBackground:false ,
-                                                      showChartValues: true,
-                                                      showChartValuesInPercentage: false,
-                                                      showChartValuesOutside: true,
-                                                      decimalPlaces: 1,
-                                                    ),
-                                                    // gradientList: ---To add gradient colors---
-                                                    // emptyColorGradient: ---Empty Color gradient---
-                                                  ),
+                                                  child: getPieChart(data),
                                                 ) : Container(
                                                   child: Text(
                                                     LocaleKeys.noNutritionFacts.tr(),

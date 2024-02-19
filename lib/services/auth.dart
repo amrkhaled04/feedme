@@ -27,8 +27,8 @@ class Auth {
       FirebaseFirestore.instance.collection('products');
   CollectionReference messages =
       FirebaseFirestore.instance.collection('messages');
-  CollectionReference carts =
-      FirebaseFirestore.instance.collection('carts');
+  // CollectionReference carts =
+  //     FirebaseFirestore.instance.collection('carts');
   CollectionReference orders =
       FirebaseFirestore.instance.collection('orders');
   CollectionReference reviews =

@@ -157,9 +157,12 @@ class _LogInFormState extends State<LogInForm> {
                             password: _passwordController.text,
                             isLoginUser: true);
 
+                        UserService.guestUser = false;
+
                         final SharedPreferences prefs = await _prefs;
 
                         prefs.setBool('guestUser', false);
+                        prefs.setBool('guest', false);
 
                         UserService.guestUser = false;
 

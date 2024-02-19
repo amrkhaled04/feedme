@@ -4,6 +4,7 @@
 
 import 'package:bechdal_app/extensions.dart';
 import 'package:bechdal_app/screens/seller_profile/seller_profile_screen.dart';
+import 'package:bechdal_app/screens/splash_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -38,6 +39,8 @@ class _ProfileCardState extends State<ProfileCard> {
 
   bool isOpen = false;
 
+  bool isDeliveryAvailable = false;
+
   DocumentSnapshot? sellerDetails;
 
   @override
@@ -45,7 +48,29 @@ class _ProfileCardState extends State<ProfileCard> {
     getSellerData();
     getRating();
     getStatus();
+    getDeliveryStatus();
     super.initState();
+  }
+
+  getDeliveryStatus(){
+
+    int idIndex = idList.indexOf(widget.data['uid']);
+
+    Map<String,dynamic> companyData = companiesData![idIndex];
+
+    List<dynamic> noDeliveryZones = companyData['no_delivery_zones'];
+
+
+      setState(() {
+        isDeliveryAvailable = !noDeliveryZones.contains(userCity);
+      });
+
+
+
+
+
+
+
   }
 
   getStatus(){
@@ -129,6 +154,7 @@ class _ProfileCardState extends State<ProfileCard> {
         productProvider.setProductDetails(widget.data);
         // cartProvider.setCartBySellerId(widget.data['uid']);
         cartProvider.setSellerOpen(isOpen);
+        cartProvider.setDeliveryAvailable(isDeliveryAvailable);
         Navigator.pushNamed(context, SellerProfileScreen.screenId);
 
 
@@ -140,7 +166,7 @@ class _ProfileCardState extends State<ProfileCard> {
           borderRadius: BorderRadius.circular(15.0),
         ),
         shadowColor: '#e6eedf'.toColor(),
-        color: (isOpen)?'#ffffff'.toColor(): Colors.black12,
+        color: (isOpen && isDeliveryAvailable)?'#ffffff'.toColor(): Colors.black12,
         elevation: 2,
         child: Center(
           child: Stack(
@@ -190,8 +216,8 @@ class _ProfileCardState extends State<ProfileCard> {
                 ],
               ),
               Text(
-                (isOpen)?'':LocaleKeys.closedLabel.tr(),
-
+                (isOpen && isDeliveryAvailable)?'': (!isDeliveryAvailable) ? LocaleKeys.doesNotDeliverToYourAreaLabel.tr() : LocaleKeys.closedLabel.tr(),
+                textAlign: TextAlign.center,
                 style: TextStyle(
                     color: Colors.black54,
                     fontSize: MediaQuery.of(context).size.height*0.03,

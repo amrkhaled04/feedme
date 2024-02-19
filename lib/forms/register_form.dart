@@ -300,13 +300,18 @@ class _RegisterFormState extends State<RegisterForm> {
                                     context: context,
                                     email: _emailController.text,
                                     password: _passwordController.text,
-                                    isLoginUser: true);
+                                    isLoginUser: true).then((value) async {
 
-                                final SharedPreferences prefs = await _prefs;
+                                      UserService.guestUser = false;
+                                      final SharedPreferences prefs = await _prefs;
 
-                                prefs.setBool('guestUser', false);
+                                      prefs.setBool('guestUser', false);
+                                      prefs.setBool('guest', false);
 
-                                UserService.guestUser = false;
+                                      UserService.guestUser = false;
+                                });
+
+
 
                           });
                         }

@@ -8,6 +8,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import '../l10n/locale_keys.g.dart';
 import '../models/search_model.dart';
 import '../models/seller_model.dart';
+import '../screens/splash_screen.dart';
 import '../services/auth.dart';
 
 class SearchCard extends StatefulWidget {
@@ -29,6 +30,7 @@ class _SearchCardState extends State<SearchCard> {
   final SearchModel item;
   Auth authService = Auth();
   bool isOpen = false;
+  bool isDeliveryAvailable = false;
 
 
   _SearchCardState({required this.address, required this.item});
@@ -38,9 +40,23 @@ class _SearchCardState extends State<SearchCard> {
 
     if(item is Sellers){
       getStatus((item as Sellers).document);
+      getDeliveryStatus((item as Sellers).document);
     }
 
     super.initState();
+  }
+
+  getDeliveryStatus(sellerDetails){
+
+    int idIndex = idList.indexOf(sellerDetails['uid']);
+
+    Map<String,dynamic> companyData = companiesData![idIndex];
+
+    if(companyData['delivery'] == true){
+      setState(() {
+        isDeliveryAvailable = true;
+      });
+    }
   }
 
   @override
@@ -179,7 +195,7 @@ class _SearchCardState extends State<SearchCard> {
                             fit: BoxFit.fill,
                           ),
                         ),
-                        (!isOpen) ? Container(
+                        (!isOpen || !isDeliveryAvailable) ? Container(
                           width: MediaQuery.of(context).size.width*0.3,
                           height: MediaQuery.of(context).size.width*0.3,
                           decoration: BoxDecoration(
@@ -188,7 +204,8 @@ class _SearchCardState extends State<SearchCard> {
                           ),
                           child: Center(
                             child: Text(
-                              LocaleKeys.closedLabel.tr(),
+                              (!isDeliveryAvailable) ? LocaleKeys.doesNotDeliverToYourAreaLabel.tr() : LocaleKeys.closedLabel.tr(),
+                              textAlign: TextAlign.center,
                               style: TextStyle(
                                   color: Colors.white,
                                   fontSize: MediaQuery.of(context).size.height*0.02

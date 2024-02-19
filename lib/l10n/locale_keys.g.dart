@@ -161,5 +161,6 @@ abstract class  LocaleKeys {
   static const mustFillAllFieldsError = 'mustFillAllFieldsError';
   static const locationUpdatedSuccessfully = 'locationUpdatedSuccessfully';
   static const buyerName = 'buyerName';
+  static const doesNotDeliverToYourAreaLabel = 'doesNotDeliverToYourAreaLabel';
 
 }

@@ -8,6 +8,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../constants/colors.dart';
 import '../../l10n/locale_keys.g.dart';
 import '../../provider/category_provider.dart';
 import '../../services/auth.dart';
@@ -62,12 +63,15 @@ class _ProfileListingState extends State<ProfileListing> {
           // );
         }
 
-
+        // if empty show loading widget
         return (snapshot.data!.docs.isEmpty)
             ? SizedBox(
                 height: MediaQuery.of(context).size.height * 0.5,
                 child: Center(
-                  child: Text(LocaleKeys.noRestaurantsFound.tr()),
+                    child: CircularProgressIndicator(
+                      color: secondaryColor,
+                    )
+
                 ),
               )
             : Container(

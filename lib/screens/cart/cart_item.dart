@@ -44,6 +44,7 @@ class _CartItemState extends State<CartItem> {
 
   @override
   Widget build(BuildContext context) {
+    print("snapshot products: ${snapshot['products'][index]['product_id']}");
     var cartProvider = Provider.of<CartProvider>(context);
     return FutureBuilder(
       future: firebaseUser.getProductDetails(
@@ -129,23 +130,26 @@ class _CartItemState extends State<CartItem> {
               ),
               IconButton(
                 onPressed: () {
-                  // delete product from cart
-                  authService.carts
-                      .doc(cartProvider.cartData!.id)
-                      .update({
-                    'products': FieldValue.arrayRemove([
-                      snapshot['products'][index],
-                    ]),
-                    'total_price': snapshot['total_price'] - double.parse(productSnapshot.data['price']) * snapshot['products'][index]['quantity'],
-                    'cart_count': snapshot['cart_count'] - snapshot['products'][index]['quantity']
-                      });
-
 
                   setState(() {
                     cartProvider.cartDataMap['total_price'] = cartProvider.cartDataMap['total_price'] - double.parse(productSnapshot.data['price']) * snapshot['products'][index]['quantity'];
                     cartProvider.cartDataMap['cart_count'] = cartProvider.cartDataMap['cart_count'] - snapshot['products'][index]['quantity'];
                     cartProvider.cartDataMap['products'].removeAt(index);
                   });
+
+                  // delete product from cart
+                  // authService.carts
+                  //     .doc(cartProvider.cartData!.id)
+                  //     .update({
+                  //   'products': FieldValue.arrayRemove([
+                  //     snapshot['products'][index],
+                  //   ]),
+                  //   'total_price': snapshot['total_price'] - double.parse(productSnapshot.data['price']) * snapshot['products'][index]['quantity'],
+                  //   'cart_count': snapshot['cart_count'] - snapshot['products'][index]['quantity']
+                  //     });
+
+
+
                   cartProvider.refresh();
 
                   refreshCartCount();

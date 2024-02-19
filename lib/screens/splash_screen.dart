@@ -32,6 +32,7 @@ Future<QuerySnapshot<Object?>>? orders;
 List? companiesData;
 String? mtoken = " ";
 bool isCompany = false;
+String userCity = " ";
 
 class _SplashScreenState extends State<SplashScreen> {
   Auth authService = Auth();
@@ -50,7 +51,17 @@ class _SplashScreenState extends State<SplashScreen> {
     getToken();
     getPermission();
     permissionBasedNavigationFunc();
+    getUserCity();
     super.initState();
+  }
+
+  void getUserCity() async {
+    authService.users.doc(authService.currentUser?.uid).get().then((value) {
+      setState(() {
+        userCity = value['city'];
+
+      });
+    });
   }
 
   void getToken() async {
@@ -91,7 +102,13 @@ class _SplashScreenState extends State<SplashScreen> {
           }
         }
       }
+
+      // add doc id to the list
+
+
+
       companiesData = List.from( data.docs.map((doc) => doc.data()).toList());
+
     });
   }
 
@@ -120,7 +137,7 @@ class _SplashScreenState extends State<SplashScreen> {
           await Navigator.pushReplacementNamed(context, MainNavigationScreen.screenId);
         } else {
           try {
-              cartProvider.setCartDetailsByUid(user.uid);
+              // cartProvider.setCartDetailsByUid(user.uid);
 
               if (idList.isEmpty){
                 await getCompaniesData();

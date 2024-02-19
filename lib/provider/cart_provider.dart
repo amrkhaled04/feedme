@@ -23,15 +23,26 @@ class CartProvider with ChangeNotifier {
 
   bool sellerOpen = false;
 
+  bool sellerDeliverToCity = false;
 
-  setCartDetailsByUid(uid) async {
-    print('uid: $uid');
-    await authService.carts.where(
-        'user_uid', isEqualTo: uid).get().then((value) {
-      setCartDetails(value.docs[0]);
-    });
+
+  setDeliveryAvailable(bool value){
+    sellerDeliverToCity = value;
+    notifyListeners();
   }
 
+  // setCartDetailsByUid(uid) async {
+  //   print('uid: $uid');
+  //   await authService.carts.where(
+  //       'user_uid', isEqualTo: uid).get().then((value) {
+  //     setCartDetails(value.docs[0]);
+  //
+  //   });
+  // }
+
+  deleteCart(){
+    cartDataMap = {};
+  }
 
   setCartDetails(details) {
 
@@ -92,23 +103,23 @@ class CartProvider with ChangeNotifier {
       return;
     }
 
-    authService.carts
-        .where('user_uid', isEqualTo: user!.uid)
-        .where('seller_uid', isEqualTo: sellerUid)
-        .get()
-        .then((value) {
-          if (value.docs.isNotEmpty) {
-            setCartDetails(value.docs[0]);
-
-            cartDataMap = cartData!.data() as Map<String, dynamic>;
-
-
-          } else {
-            setCartDetails(null);
-
-          }
-          notifyListeners();
-    });
+    // authService.carts
+    //     .where('user_uid', isEqualTo: user!.uid)
+    //     .where('seller_uid', isEqualTo: sellerUid)
+    //     .get()
+    //     .then((value) {
+    //       if (value.docs.isNotEmpty) {
+    //         setCartDetails(value.docs[0]);
+    //
+    //         cartDataMap = cartData!.data() as Map<String, dynamic>;
+    //
+    //
+    //       } else {
+    //         setCartDetails(null);
+    //
+    //       }
+    //       notifyListeners();
+    // });
 
     notifyListeners();
   }
@@ -151,6 +162,7 @@ class CartProvider with ChangeNotifier {
   }
 
   refresh(){
+
     notifyListeners();
   }
 
@@ -163,32 +175,32 @@ class CartProvider with ChangeNotifier {
     return cartData!['seller_uid'] != currentSellerId;
   }
 
-  saveCart(){
-    if(cartData != null){
-      cartData!.reference.update({
-        'products': cartDataMap['products'],
-        'total_price': cartDataMap['total_price'],
-        'cart_count': cartDataMap['cart_count'],
-      });
-    }else{
-
-
-    if (firstSave) {
-        firstSave = false;
-        authService.carts.add({
-          'user_uid': user!.uid,
-          'seller_uid': seller_uid,
-          'products': cartDataMap['products'],
-          'total_price': cartDataMap['total_price'],
-          'cart_count': cartDataMap['cart_count'],
-          'created_at': DateTime.now(),
-        }).then((value) {
-          setCartDetails(value);
-          notifyListeners();
-        });
-      }
-    }
-  }
+  // saveCart(){
+  //   if(cartData != null){
+  //     cartData!.reference.update({
+  //       'products': cartDataMap['products'],
+  //       'total_price': cartDataMap['total_price'],
+  //       'cart_count': cartDataMap['cart_count'],
+  //     });
+  //   }else{
+  //
+  //
+  //   if (firstSave) {
+  //       firstSave = false;
+  //       authService.carts.add({
+  //         'user_uid': user!.uid,
+  //         'seller_uid': seller_uid,
+  //         'products': cartDataMap['products'],
+  //         'total_price': cartDataMap['total_price'],
+  //         'cart_count': cartDataMap['cart_count'],
+  //         'created_at': DateTime.now(),
+  //       }).then((value) {
+  //         setCartDetails(value);
+  //         notifyListeners();
+  //       });
+  //     }
+  //   }
+  // }
 
   setSellerOpen(bool value){
     sellerOpen = value;

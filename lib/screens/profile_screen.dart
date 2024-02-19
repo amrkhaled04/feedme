@@ -1,6 +1,7 @@
 import 'package:bechdal_app/constants/colors.dart';
 import 'package:bechdal_app/constants/widgets.dart';
 import 'package:bechdal_app/extensions.dart';
+import 'package:bechdal_app/screens/splash_screen.dart';
 import 'package:bechdal_app/screens/welcome_screen.dart';
 import 'package:bechdal_app/services/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -13,8 +14,10 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:bechdal_app/utils.dart';
+import 'package:provider/provider.dart';
 import '../components/change_profile_photo.dart';
 import '../l10n/locale_keys.g.dart';
+import '../provider/cart_provider.dart';
 import '../services/auth.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -28,6 +31,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   final GoogleSignIn googleSignIn = GoogleSignIn();
   UserService firebaseUser = UserService();
+
 
   String errorString = "";
 
@@ -62,7 +66,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   openLocationBottomsheet(BuildContext context) {
 
     bool firstLaunch = true;
-    String countryValue = '';
+    String countryValue = 'Egypt';
     String stateValue = '';
     String cityValue = '';
     String address = '';
@@ -79,6 +83,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             enableDrag: false,
             context: context,
             backgroundColor: '#f9fcf7'.toColor(),
+            isDismissible: false,
             builder: (context) {
               return StatefulBuilder(
                 builder: (context, setState) {
@@ -127,13 +132,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           elevation: 0.5,
                           title: Row(
                               children: [
-                                IconButton(
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                    icon: const Icon(
-                                      Icons.clear,
-                                    )),
+                                // (cityValue != "" ) ? IconButton(
+                                //     onPressed: () {
+                                //       Navigator.pop(context);
+                                //     },
+                                //     icon: const Icon(
+                                //       Icons.clear,
+                                //     )) : Container(),
                                 const SizedBox(
                                   width: 10,
                                 ),
@@ -236,12 +241,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             layout: Layout.vertical,
                             defaultCountry: CscCountry.Egypt,
                             flagState: CountryFlag.DISABLE,
+                            // disableCountry: true,
+                            countryFilter: [CscCountry.Egypt],
                             dropdownDecoration:
                             const BoxDecoration(shape: BoxShape.rectangle),
                             onCountryChanged: (value) async {
-                              setState(() {
-                                countryValue = value;
-                              });
+                              // setState(() {
+                              //   countryValue = value;
+                              // });
                             },
                             onStateChanged: (value) async {
                               setState(() {
@@ -255,6 +262,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 if (value != null) {
                                   cityValue = value;
                                   manualAddress = "$cityValue, $stateValue";
+                                  userCity = cityValue;
                                   print(manualAddress);
                                 }
                               });
@@ -298,6 +306,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
 
+    var cartProvider = Provider.of<CartProvider>(context);
     // if (!UserService.guestUser) {
     //     firebaseUser.getUsePosts().then((value) {
     //       setState(() {
@@ -496,6 +505,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 await googleSignIn.signOut();
 
                 await FirebaseAuth.instance.signOut().then((value) {
+                  cartProvider.deleteCart();
                   Navigator.of(context).pop();
                   Navigator.of(context).pushNamedAndRemoveUntil(
                       WelcomeScreen.screenId, (route) => false);
